@@ -1,0 +1,18 @@
+{
+  "name": "mira-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Mira — AI-native global money prototype. SwiftUI iOS app plus a server-side proxy that keeps every model credential off the device, routes messages through Jev, and runs a durable simulated two-app ledger.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node --watch server/server.mjs",
+    "start": "node server/server.mjs",
+    "test": "node --test server/test/*.test.mjs",
+    "test:server": "node --test server/test/*.test.mjs",
+    "health": "curl -s http://127.0.0.1:8791/health | python3 -m json.tool"
+  },
+  "dependencies": {}
+}

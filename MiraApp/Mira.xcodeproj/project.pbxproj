@@ -1,0 +1,1169 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		000000000000000000001072 /* LaunchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001001 /* LaunchOptions.swift */; };
+		000000000000000000001073 /* LaunchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001001 /* LaunchOptions.swift */; };
+		000000000000000000001074 /* MiraRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001002 /* MiraRoot.swift */; };
+		000000000000000000001075 /* MiraRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001002 /* MiraRoot.swift */; };
+		000000000000000000001076 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001003 /* Brand.swift */; };
+		000000000000000000001077 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001003 /* Brand.swift */; };
+		000000000000000000001078 /* CardArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001004 /* CardArt.swift */; };
+		000000000000000000001079 /* CardArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001004 /* CardArt.swift */; };
+		00000000000000000000107A /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001005 /* Controls.swift */; };
+		00000000000000000000107B /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001005 /* Controls.swift */; };
+		00000000000000000000107C /* CurrencyMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001006 /* CurrencyMark.swift */; };
+		00000000000000000000107D /* CurrencyMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001006 /* CurrencyMark.swift */; };
+		00000000000000000000107E /* IconLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001007 /* IconLibrary.swift */; };
+		00000000000000000000107F /* IconLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001007 /* IconLibrary.swift */; };
+		000000000000000000001080 /* LivingDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001008 /* LivingDot.swift */; };
+		000000000000000000001081 /* LivingDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001008 /* LivingDot.swift */; };
+		000000000000000000001082 /* SVGMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001009 /* SVGMark.swift */; };
+		000000000000000000001083 /* SVGMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001009 /* SVGMark.swift */; };
+		000000000000000000001084 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100A /* Tokens.swift */; };
+		000000000000000000001085 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100A /* Tokens.swift */; };
+		000000000000000000001086 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100B /* Type.swift */; };
+		000000000000000000001087 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100B /* Type.swift */; };
+		000000000000000000001088 /* Wordmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100C /* Wordmark.swift */; };
+		000000000000000000001089 /* Wordmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100C /* Wordmark.swift */; };
+		00000000000000000000108A /* AgentRoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100D /* AgentRoster.swift */; };
+		00000000000000000000108B /* AgentRoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100D /* AgentRoster.swift */; };
+		00000000000000000000108C /* AgentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100E /* AgentTask.swift */; };
+		00000000000000000000108D /* AgentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100E /* AgentTask.swift */; };
+		00000000000000000000108E /* AllocationPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100F /* AllocationPlan.swift */; };
+		00000000000000000000108F /* AllocationPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000100F /* AllocationPlan.swift */; };
+		000000000000000000001090 /* CapabilityDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001010 /* CapabilityDocument.swift */; };
+		000000000000000000001091 /* CapabilityDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001010 /* CapabilityDocument.swift */; };
+		000000000000000000001092 /* Capacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001011 /* Capacity.swift */; };
+		000000000000000000001093 /* Capacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001011 /* Capacity.swift */; };
+		000000000000000000001094 /* Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001012 /* Cards.swift */; };
+		000000000000000000001095 /* Cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001012 /* Cards.swift */; };
+		000000000000000000001096 /* ChatThreads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001013 /* ChatThreads.swift */; };
+		000000000000000000001097 /* ChatThreads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001013 /* ChatThreads.swift */; };
+		000000000000000000001098 /* Checkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001014 /* Checkout.swift */; };
+		000000000000000000001099 /* Checkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001014 /* Checkout.swift */; };
+		00000000000000000000109A /* ConsentPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001015 /* ConsentPolicy.swift */; };
+		00000000000000000000109B /* ConsentPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001015 /* ConsentPolicy.swift */; };
+		00000000000000000000109C /* ContactsBills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001016 /* ContactsBills.swift */; };
+		00000000000000000000109D /* ContactsBills.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001016 /* ContactsBills.swift */; };
+		00000000000000000000109E /* CorridorSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001017 /* CorridorSupport.swift */; };
+		00000000000000000000109F /* CorridorSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001017 /* CorridorSupport.swift */; };
+		0000000000000000000010A0 /* DecisionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001018 /* DecisionProvider.swift */; };
+		0000000000000000000010A1 /* DecisionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001018 /* DecisionProvider.swift */; };
+		0000000000000000000010A2 /* Eligibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001019 /* Eligibility.swift */; };
+		0000000000000000000010A3 /* Eligibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001019 /* Eligibility.swift */; };
+		0000000000000000000010A4 /* IncomePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101A /* IncomePlan.swift */; };
+		0000000000000000000010A5 /* IncomePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101A /* IncomePlan.swift */; };
+		0000000000000000000010A6 /* Ledger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101B /* Ledger.swift */; };
+		0000000000000000000010A7 /* Ledger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101B /* Ledger.swift */; };
+		0000000000000000000010A8 /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101C /* Money.swift */; };
+		0000000000000000000010A9 /* Money.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101C /* Money.swift */; };
+		0000000000000000000010AA /* MoneyDesk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101D /* MoneyDesk.swift */; };
+		0000000000000000000010AB /* MoneyDesk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101D /* MoneyDesk.swift */; };
+		0000000000000000000010AC /* MoneyDeskActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101E /* MoneyDeskActions.swift */; };
+		0000000000000000000010AD /* MoneyDeskActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101E /* MoneyDeskActions.swift */; };
+		0000000000000000000010AE /* Offers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101F /* Offers.swift */; };
+		0000000000000000000010AF /* Offers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000101F /* Offers.swift */; };
+		0000000000000000000010B0 /* Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001020 /* Payments.swift */; };
+		0000000000000000000010B1 /* Payments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001020 /* Payments.swift */; };
+		0000000000000000000010B2 /* Pricing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001021 /* Pricing.swift */; };
+		0000000000000000000010B3 /* Pricing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001021 /* Pricing.swift */; };
+		0000000000000000000010B4 /* Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001022 /* Receipt.swift */; };
+		0000000000000000000010B5 /* Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001022 /* Receipt.swift */; };
+		0000000000000000000010B6 /* Reminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001023 /* Reminders.swift */; };
+		0000000000000000000010B7 /* Reminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001023 /* Reminders.swift */; };
+		0000000000000000000010B8 /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001024 /* Rules.swift */; };
+		0000000000000000000010B9 /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001024 /* Rules.swift */; };
+		0000000000000000000010BA /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001025 /* Scenario.swift */; };
+		0000000000000000000010BB /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001025 /* Scenario.swift */; };
+		0000000000000000000010BC /* StableTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001026 /* StableTransfer.swift */; };
+		0000000000000000000010BD /* StableTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001026 /* StableTransfer.swift */; };
+		0000000000000000000010BE /* Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001027 /* Subscriptions.swift */; };
+		0000000000000000000010BF /* Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001027 /* Subscriptions.swift */; };
+		0000000000000000000010C0 /* Swap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001028 /* Swap.swift */; };
+		0000000000000000000010C1 /* Swap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001028 /* Swap.swift */; };
+		0000000000000000000010C2 /* DepthScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001029 /* DepthScene.swift */; };
+		0000000000000000000010C3 /* DepthScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001029 /* DepthScene.swift */; };
+		0000000000000000000010C4 /* MotionSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102A /* MotionSource.swift */; };
+		0000000000000000000010C5 /* MotionSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102A /* MotionSource.swift */; };
+		0000000000000000000010C6 /* MiraArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102B /* MiraArt.swift */; };
+		0000000000000000000010C7 /* MiraArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102B /* MiraArt.swift */; };
+		0000000000000000000010C8 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102C /* AccountsView.swift */; };
+		0000000000000000000010C9 /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102C /* AccountsView.swift */; };
+		0000000000000000000010CA /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102D /* ActivityView.swift */; };
+		0000000000000000000010CB /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102D /* ActivityView.swift */; };
+		0000000000000000000010CC /* AureaHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102E /* AureaHome.swift */; };
+		0000000000000000000010CD /* AureaHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102E /* AureaHome.swift */; };
+		0000000000000000000010CE /* AureaMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102F /* AureaMove.swift */; };
+		0000000000000000000010CF /* AureaMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000102F /* AureaMove.swift */; };
+		0000000000000000000010D0 /* AureaOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001030 /* AureaOnboarding.swift */; };
+		0000000000000000000010D1 /* AureaOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001030 /* AureaOnboarding.swift */; };
+		0000000000000000000010D2 /* AureaOnboardingScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001031 /* AureaOnboardingScenes.swift */; };
+		0000000000000000000010D3 /* AureaOnboardingScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001031 /* AureaOnboardingScenes.swift */; };
+		0000000000000000000010D4 /* SceneStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001032 /* SceneStage.swift */; };
+		0000000000000000000010D5 /* SceneStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001032 /* SceneStage.swift */; };
+		0000000000000000000010D6 /* SceneTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001033 /* SceneTelemetry.swift */; };
+		0000000000000000000010D7 /* SceneTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001033 /* SceneTelemetry.swift */; };
+		0000000000000000000010D8 /* AgentTaskCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001034 /* AgentTaskCard.swift */; };
+		0000000000000000000010D9 /* AgentTaskCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001034 /* AgentTaskCard.swift */; };
+		0000000000000000000010DA /* CardDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001035 /* CardDetailsView.swift */; };
+		0000000000000000000010DB /* CardDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001035 /* CardDetailsView.swift */; };
+		0000000000000000000010DC /* ChatHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001036 /* ChatHomeView.swift */; };
+		0000000000000000000010DD /* ChatHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001036 /* ChatHomeView.swift */; };
+		0000000000000000000010DE /* ChatTurnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001037 /* ChatTurnView.swift */; };
+		0000000000000000000010DF /* ChatTurnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001037 /* ChatTurnView.swift */; };
+		0000000000000000000010E0 /* ContactsBillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001038 /* ContactsBillsView.swift */; };
+		0000000000000000000010E1 /* ContactsBillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001038 /* ContactsBillsView.swift */; };
+		0000000000000000000010E2 /* MainMenuSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001039 /* MainMenuSheet.swift */; };
+		0000000000000000000010E3 /* MainMenuSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001039 /* MainMenuSheet.swift */; };
+		0000000000000000000010E4 /* ReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103A /* ReceiptView.swift */; };
+		0000000000000000000010E5 /* ReceiptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103A /* ReceiptView.swift */; };
+		0000000000000000000010E6 /* RosterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103B /* RosterSheet.swift */; };
+		0000000000000000000010E7 /* RosterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103B /* RosterSheet.swift */; };
+		0000000000000000000010E8 /* MiraAgentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103C /* MiraAgentView.swift */; };
+		0000000000000000000010E9 /* MiraAgentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103C /* MiraAgentView.swift */; };
+		0000000000000000000010EA /* MoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103D /* MoveView.swift */; };
+		0000000000000000000010EB /* MoveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103D /* MoveView.swift */; };
+		0000000000000000000010EC /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103E /* OnboardingView.swift */; };
+		0000000000000000000010ED /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103E /* OnboardingView.swift */; };
+		0000000000000000000010EE /* OrionField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103F /* OrionField.swift */; };
+		0000000000000000000010EF /* OrionField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000103F /* OrionField.swift */; };
+		0000000000000000000010F0 /* OrionHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001040 /* OrionHome.swift */; };
+		0000000000000000000010F1 /* OrionHome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001040 /* OrionHome.swift */; };
+		0000000000000000000010F2 /* OrionOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001041 /* OrionOnboarding.swift */; };
+		0000000000000000000010F3 /* OrionOnboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001041 /* OrionOnboarding.swift */; };
+		0000000000000000000010F4 /* OrionStations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001042 /* OrionStations.swift */; };
+		0000000000000000000010F5 /* OrionStations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001042 /* OrionStations.swift */; };
+		0000000000000000000010F6 /* TransferConfirmSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001043 /* TransferConfirmSheet.swift */; };
+		0000000000000000000010F7 /* TransferConfirmSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001043 /* TransferConfirmSheet.swift */; };
+		0000000000000000000010F8 /* PlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001044 /* PlanView.swift */; };
+		0000000000000000000010F9 /* PlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001044 /* PlanView.swift */; };
+		0000000000000000000010FA /* YouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001045 /* YouView.swift */; };
+		0000000000000000000010FB /* YouView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001045 /* YouView.swift */; };
+		0000000000000000000010FC /* BackgroundRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001046 /* BackgroundRefresh.swift */; };
+		0000000000000000000010FD /* BackgroundRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001046 /* BackgroundRefresh.swift */; };
+		0000000000000000000010FE /* ExplanationComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001047 /* ExplanationComposer.swift */; };
+		0000000000000000000010FF /* ExplanationComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001047 /* ExplanationComposer.swift */; };
+		000000000000000000001100 /* JevProxyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001048 /* JevProxyClient.swift */; };
+		000000000000000000001101 /* JevProxyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001048 /* JevProxyClient.swift */; };
+		000000000000000000001102 /* LiveRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001049 /* LiveRates.swift */; };
+		000000000000000000001103 /* LiveRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001049 /* LiveRates.swift */; };
+		000000000000000000001104 /* MiraAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104A /* MiraAgent.swift */; };
+		000000000000000000001105 /* MiraAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104A /* MiraAgent.swift */; };
+		000000000000000000001106 /* MiraRouteClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104B /* MiraRouteClient.swift */; };
+		000000000000000000001107 /* MiraRouteClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104B /* MiraRouteClient.swift */; };
+		000000000000000000001108 /* MiraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104C /* MiraSession.swift */; };
+		000000000000000000001109 /* MiraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104C /* MiraSession.swift */; };
+		00000000000000000000110A /* ReminderCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104D /* ReminderCenter.swift */; };
+		00000000000000000000110B /* ReminderCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104D /* ReminderCenter.swift */; };
+		00000000000000000000110C /* SimulatedPaymentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104E /* SimulatedPaymentProvider.swift */; };
+		00000000000000000000110D /* SimulatedPaymentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104E /* SimulatedPaymentProvider.swift */; };
+		00000000000000000000110E /* StandaloneAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104F /* StandaloneAgent.swift */; };
+		00000000000000000000110F /* StandaloneAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000104F /* StandaloneAgent.swift */; };
+		000000000000000000001110 /* TransferRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001050 /* TransferRelay.swift */; };
+		000000000000000000001111 /* TransferRelay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001050 /* TransferRelay.swift */; };
+		000000000000000000001112 /* MiraOrionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001051 /* MiraOrionApp.swift */; };
+		000000000000000000001113 /* MiraAureaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001052 /* MiraAureaApp.swift */; };
+		000000000000000000001114 /* MiraDomainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001053 /* MiraDomainTests.swift */; };
+		00000000000000000000106C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001054 /* Assets.xcassets */; };
+		000000000000000000001070 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000106E /* Assets.xcassets */; };
+		00000000000000000000106D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 000000000000000000001054 /* Assets.xcassets */; };
+		000000000000000000001071 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000106F /* Assets.xcassets */; };
+		000000000000000000003001 /* DemoPersonas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000002001 /* DemoPersonas.swift */; };
+		000000000000000000003002 /* GoalArtService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000002002 /* GoalArtService.swift */; };
+		000000000000000000003003 /* ProfileChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000002003 /* ProfileChooserView.swift */; };
+		000000000000000000003004 /* PiggyBanksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000002004 /* PiggyBanksView.swift */; };
+		000000000000000000003101 /* DemoPersonas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000002001 /* DemoPersonas.swift */; };
+		000000000000000000003102 /* GoalArtService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000002002 /* GoalArtService.swift */; };
+		000000000000000000003103 /* ProfileChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000002003 /* ProfileChooserView.swift */; };
+		000000000000000000003104 /* PiggyBanksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000002004 /* PiggyBanksView.swift */; };
+		000000000000000000003201 /* MiraCastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000002005 /* MiraCastTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		000000000000000000000071 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000006 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 000000000000000000000005;
+			remoteInfo = MiraOrion;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		000000000000000000000004 /* MiraOrion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiraOrion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000031 /* MiraAurea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiraAurea.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000007 /* MiraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000001001 /* LaunchOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchOptions.swift; sourceTree = "<group>"; };
+		000000000000000000001002 /* MiraRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiraRoot.swift; sourceTree = "<group>"; };
+		000000000000000000001003 /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
+		000000000000000000001004 /* CardArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardArt.swift; sourceTree = "<group>"; };
+		000000000000000000001005 /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
+		000000000000000000001006 /* CurrencyMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyMark.swift; sourceTree = "<group>"; };
+		000000000000000000001007 /* IconLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconLibrary.swift; sourceTree = "<group>"; };
+		000000000000000000001008 /* LivingDot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivingDot.swift; sourceTree = "<group>"; };
+		000000000000000000001009 /* SVGMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGMark.swift; sourceTree = "<group>"; };
+		00000000000000000000100A /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.swift; sourceTree = "<group>"; };
+		00000000000000000000100B /* Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
+		00000000000000000000100C /* Wordmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wordmark.swift; sourceTree = "<group>"; };
+		00000000000000000000100D /* AgentRoster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentRoster.swift; sourceTree = "<group>"; };
+		00000000000000000000100E /* AgentTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentTask.swift; sourceTree = "<group>"; };
+		00000000000000000000100F /* AllocationPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllocationPlan.swift; sourceTree = "<group>"; };
+		000000000000000000001010 /* CapabilityDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapabilityDocument.swift; sourceTree = "<group>"; };
+		000000000000000000001011 /* Capacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capacity.swift; sourceTree = "<group>"; };
+		000000000000000000001012 /* Cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cards.swift; sourceTree = "<group>"; };
+		000000000000000000001013 /* ChatThreads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatThreads.swift; sourceTree = "<group>"; };
+		000000000000000000001014 /* Checkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkout.swift; sourceTree = "<group>"; };
+		000000000000000000001015 /* ConsentPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentPolicy.swift; sourceTree = "<group>"; };
+		000000000000000000001016 /* ContactsBills.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsBills.swift; sourceTree = "<group>"; };
+		000000000000000000001017 /* CorridorSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorridorSupport.swift; sourceTree = "<group>"; };
+		000000000000000000001018 /* DecisionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionProvider.swift; sourceTree = "<group>"; };
+		000000000000000000001019 /* Eligibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eligibility.swift; sourceTree = "<group>"; };
+		00000000000000000000101A /* IncomePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomePlan.swift; sourceTree = "<group>"; };
+		00000000000000000000101B /* Ledger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ledger.swift; sourceTree = "<group>"; };
+		00000000000000000000101C /* Money.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Money.swift; sourceTree = "<group>"; };
+		00000000000000000000101D /* MoneyDesk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyDesk.swift; sourceTree = "<group>"; };
+		00000000000000000000101E /* MoneyDeskActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyDeskActions.swift; sourceTree = "<group>"; };
+		00000000000000000000101F /* Offers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offers.swift; sourceTree = "<group>"; };
+		000000000000000000001020 /* Payments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payments.swift; sourceTree = "<group>"; };
+		000000000000000000001021 /* Pricing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pricing.swift; sourceTree = "<group>"; };
+		000000000000000000001022 /* Receipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receipt.swift; sourceTree = "<group>"; };
+		000000000000000000001023 /* Reminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminders.swift; sourceTree = "<group>"; };
+		000000000000000000001024 /* Rules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rules.swift; sourceTree = "<group>"; };
+		000000000000000000001025 /* Scenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
+		000000000000000000001026 /* StableTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StableTransfer.swift; sourceTree = "<group>"; };
+		000000000000000000001027 /* Subscriptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscriptions.swift; sourceTree = "<group>"; };
+		000000000000000000001028 /* Swap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swap.swift; sourceTree = "<group>"; };
+		000000000000000000001029 /* DepthScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepthScene.swift; sourceTree = "<group>"; };
+		00000000000000000000102A /* MotionSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSource.swift; sourceTree = "<group>"; };
+		00000000000000000000102B /* MiraArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiraArt.swift; sourceTree = "<group>"; };
+		00000000000000000000102C /* AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
+		00000000000000000000102D /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		00000000000000000000102E /* AureaHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AureaHome.swift; sourceTree = "<group>"; };
+		00000000000000000000102F /* AureaMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AureaMove.swift; sourceTree = "<group>"; };
+		000000000000000000001030 /* AureaOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AureaOnboarding.swift; sourceTree = "<group>"; };
+		000000000000000000001031 /* AureaOnboardingScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AureaOnboardingScenes.swift; sourceTree = "<group>"; };
+		000000000000000000001032 /* SceneStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneStage.swift; sourceTree = "<group>"; };
+		000000000000000000001033 /* SceneTelemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneTelemetry.swift; sourceTree = "<group>"; };
+		000000000000000000001034 /* AgentTaskCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentTaskCard.swift; sourceTree = "<group>"; };
+		000000000000000000001035 /* CardDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsView.swift; sourceTree = "<group>"; };
+		000000000000000000001036 /* ChatHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHomeView.swift; sourceTree = "<group>"; };
+		000000000000000000001037 /* ChatTurnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTurnView.swift; sourceTree = "<group>"; };
+		000000000000000000001038 /* ContactsBillsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsBillsView.swift; sourceTree = "<group>"; };
+		000000000000000000001039 /* MainMenuSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuSheet.swift; sourceTree = "<group>"; };
+		00000000000000000000103A /* ReceiptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptView.swift; sourceTree = "<group>"; };
+		00000000000000000000103B /* RosterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RosterSheet.swift; sourceTree = "<group>"; };
+		00000000000000000000103C /* MiraAgentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiraAgentView.swift; sourceTree = "<group>"; };
+		00000000000000000000103D /* MoveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveView.swift; sourceTree = "<group>"; };
+		00000000000000000000103E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		00000000000000000000103F /* OrionField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrionField.swift; sourceTree = "<group>"; };
+		000000000000000000001040 /* OrionHome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrionHome.swift; sourceTree = "<group>"; };
+		000000000000000000001041 /* OrionOnboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrionOnboarding.swift; sourceTree = "<group>"; };
+		000000000000000000001042 /* OrionStations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrionStations.swift; sourceTree = "<group>"; };
+		000000000000000000001043 /* TransferConfirmSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferConfirmSheet.swift; sourceTree = "<group>"; };
+		000000000000000000001044 /* PlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanView.swift; sourceTree = "<group>"; };
+		000000000000000000001045 /* YouView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouView.swift; sourceTree = "<group>"; };
+		000000000000000000001046 /* BackgroundRefresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundRefresh.swift; sourceTree = "<group>"; };
+		000000000000000000001047 /* ExplanationComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationComposer.swift; sourceTree = "<group>"; };
+		000000000000000000001048 /* JevProxyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JevProxyClient.swift; sourceTree = "<group>"; };
+		000000000000000000001049 /* LiveRates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveRates.swift; sourceTree = "<group>"; };
+		00000000000000000000104A /* MiraAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiraAgent.swift; sourceTree = "<group>"; };
+		00000000000000000000104B /* MiraRouteClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiraRouteClient.swift; sourceTree = "<group>"; };
+		00000000000000000000104C /* MiraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiraSession.swift; sourceTree = "<group>"; };
+		00000000000000000000104D /* ReminderCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCenter.swift; sourceTree = "<group>"; };
+		00000000000000000000104E /* SimulatedPaymentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedPaymentProvider.swift; sourceTree = "<group>"; };
+		00000000000000000000104F /* StandaloneAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandaloneAgent.swift; sourceTree = "<group>"; };
+		000000000000000000001050 /* TransferRelay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferRelay.swift; sourceTree = "<group>"; };
+		000000000000000000001051 /* MiraOrionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiraOrionApp.swift; sourceTree = "<group>"; };
+		000000000000000000001052 /* MiraAureaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiraAureaApp.swift; sourceTree = "<group>"; };
+		000000000000000000001053 /* MiraDomainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiraDomainTests.swift; sourceTree = "<group>"; };
+		000000000000000000001054 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Mira/Resources/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		000000000000000000002001 /* DemoPersonas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoPersonas.swift; sourceTree = "<group>"; };
+		000000000000000000002002 /* GoalArtService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalArtService.swift; sourceTree = "<group>"; };
+		000000000000000000002003 /* ProfileChooserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChooserView.swift; sourceTree = "<group>"; };
+		000000000000000000002004 /* PiggyBanksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiggyBanksView.swift; sourceTree = "<group>"; };
+		000000000000000000002005 /* MiraCastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiraCastTests.swift; sourceTree = "<group>"; };
+		00000000000000000000106E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Orion/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		00000000000000000000106F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Aurea/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		000000000000000000001056 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001001 /* LaunchOptions.swift */,
+				000000000000000000001002 /* MiraRoot.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		000000000000000000001057 /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001003 /* Brand.swift */,
+				000000000000000000001004 /* CardArt.swift */,
+				000000000000000000001005 /* Controls.swift */,
+				000000000000000000001006 /* CurrencyMark.swift */,
+				000000000000000000001007 /* IconLibrary.swift */,
+				000000000000000000001008 /* LivingDot.swift */,
+				000000000000000000001009 /* SVGMark.swift */,
+				00000000000000000000100A /* Tokens.swift */,
+				00000000000000000000100B /* Type.swift */,
+				00000000000000000000100C /* Wordmark.swift */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+		000000000000000000001058 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000100D /* AgentRoster.swift */,
+				00000000000000000000100E /* AgentTask.swift */,
+				00000000000000000000100F /* AllocationPlan.swift */,
+				000000000000000000001010 /* CapabilityDocument.swift */,
+				000000000000000000001011 /* Capacity.swift */,
+				000000000000000000001012 /* Cards.swift */,
+				000000000000000000001013 /* ChatThreads.swift */,
+				000000000000000000001014 /* Checkout.swift */,
+				000000000000000000001015 /* ConsentPolicy.swift */,
+				000000000000000000001016 /* ContactsBills.swift */,
+				000000000000000000001017 /* CorridorSupport.swift */,
+				000000000000000000001018 /* DecisionProvider.swift */,
+				000000000000000000002001 /* DemoPersonas.swift */,
+				000000000000000000001019 /* Eligibility.swift */,
+				00000000000000000000101A /* IncomePlan.swift */,
+				00000000000000000000101B /* Ledger.swift */,
+				00000000000000000000101C /* Money.swift */,
+				00000000000000000000101D /* MoneyDesk.swift */,
+				00000000000000000000101E /* MoneyDeskActions.swift */,
+				00000000000000000000101F /* Offers.swift */,
+				000000000000000000001020 /* Payments.swift */,
+				000000000000000000001021 /* Pricing.swift */,
+				000000000000000000001022 /* Receipt.swift */,
+				000000000000000000001023 /* Reminders.swift */,
+				000000000000000000001024 /* Rules.swift */,
+				000000000000000000001025 /* Scenario.swift */,
+				000000000000000000001026 /* StableTransfer.swift */,
+				000000000000000000001027 /* Subscriptions.swift */,
+				000000000000000000001028 /* Swap.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		000000000000000000001059 /* Motion */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001029 /* DepthScene.swift */,
+				00000000000000000000102A /* MotionSource.swift */,
+			);
+			path = Motion;
+			sourceTree = "<group>";
+		};
+		00000000000000000000105A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001054 /* Assets.xcassets */,
+				00000000000000000000102B /* MiraArt.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		00000000000000000000105C /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000102C /* AccountsView.swift */,
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		00000000000000000000105D /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000102D /* ActivityView.swift */,
+			);
+			path = Activity;
+			sourceTree = "<group>";
+		};
+		00000000000000000000105E /* Aurea */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000102E /* AureaHome.swift */,
+				00000000000000000000102F /* AureaMove.swift */,
+				000000000000000000001030 /* AureaOnboarding.swift */,
+				000000000000000000001031 /* AureaOnboardingScenes.swift */,
+				000000000000000000001032 /* SceneStage.swift */,
+				000000000000000000001033 /* SceneTelemetry.swift */,
+			);
+			path = Aurea;
+			sourceTree = "<group>";
+		};
+		00000000000000000000105F /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001034 /* AgentTaskCard.swift */,
+				000000000000000000001035 /* CardDetailsView.swift */,
+				000000000000000000001036 /* ChatHomeView.swift */,
+				000000000000000000001037 /* ChatTurnView.swift */,
+				000000000000000000001038 /* ContactsBillsView.swift */,
+				000000000000000000001039 /* MainMenuSheet.swift */,
+				00000000000000000000103A /* ReceiptView.swift */,
+				00000000000000000000103B /* RosterSheet.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		000000000000000000001060 /* Mira */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000103C /* MiraAgentView.swift */,
+			);
+			path = Mira;
+			sourceTree = "<group>";
+		};
+		000000000000000000001061 /* Move */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000103D /* MoveView.swift */,
+			);
+			path = Move;
+			sourceTree = "<group>";
+		};
+		000000000000000000001062 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000103E /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		000000000000000000001063 /* Orion */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000103F /* OrionField.swift */,
+				000000000000000000001040 /* OrionHome.swift */,
+				000000000000000000001041 /* OrionOnboarding.swift */,
+				000000000000000000001042 /* OrionStations.swift */,
+				000000000000000000001043 /* TransferConfirmSheet.swift */,
+			);
+			path = Orion;
+			sourceTree = "<group>";
+		};
+		000000000000000000001064 /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001044 /* PlanView.swift */,
+			);
+			path = Plan;
+			sourceTree = "<group>";
+		};
+		000000000000000000001065 /* You */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001045 /* YouView.swift */,
+			);
+			path = You;
+			sourceTree = "<group>";
+		};
+		00000000000000000000105B /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				00000000000000000000105C /* Accounts */,
+				00000000000000000000105D /* Activity */,
+				00000000000000000000105E /* Aurea */,
+				00000000000000000000105F /* Chat */,
+				000000000000000000001060 /* Mira */,
+				000000000000000000001061 /* Move */,
+				000000000000000000001062 /* Onboarding */,
+				000000000000000000001063 /* Orion */,
+				000000000000000000002007 /* PiggyBanks */,
+				000000000000000000001064 /* Plan */,
+				000000000000000000002006 /* Profile */,
+				000000000000000000001065 /* You */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		000000000000000000002006 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000002003 /* ProfileChooserView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		000000000000000000002007 /* PiggyBanks */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000002004 /* PiggyBanksView.swift */,
+			);
+			path = PiggyBanks;
+			sourceTree = "<group>";
+		};
+		000000000000000000001066 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001046 /* BackgroundRefresh.swift */,
+				000000000000000000001047 /* ExplanationComposer.swift */,
+				000000000000000000002002 /* GoalArtService.swift */,
+				000000000000000000001048 /* JevProxyClient.swift */,
+				000000000000000000001049 /* LiveRates.swift */,
+				00000000000000000000104A /* MiraAgent.swift */,
+				00000000000000000000104B /* MiraRouteClient.swift */,
+				00000000000000000000104C /* MiraSession.swift */,
+				00000000000000000000104D /* ReminderCenter.swift */,
+				00000000000000000000104E /* SimulatedPaymentProvider.swift */,
+				00000000000000000000104F /* StandaloneAgent.swift */,
+				000000000000000000001050 /* TransferRelay.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		000000000000000000001055 /* Mira */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001056 /* App */,
+				000000000000000000001057 /* Design */,
+				000000000000000000001058 /* Domain */,
+				000000000000000000001059 /* Motion */,
+				00000000000000000000105A /* Resources */,
+				00000000000000000000105B /* Screens */,
+				000000000000000000001066 /* Services */,
+			);
+			path = Mira;
+			sourceTree = "<group>";
+		};
+		000000000000000000001067 /* Orion */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001051 /* MiraOrionApp.swift */,
+			);
+			path = Orion;
+			sourceTree = "<group>";
+		};
+		000000000000000000001068 /* Aurea */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001052 /* MiraAureaApp.swift */,
+			);
+			path = Aurea;
+			sourceTree = "<group>";
+		};
+		000000000000000000001069 /* MiraTests */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000002005 /* MiraCastTests.swift */,
+				000000000000000000001053 /* MiraDomainTests.swift */,
+			);
+			path = MiraTests;
+			sourceTree = "<group>";
+		};
+		00000000000000000000106A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000004 /* MiraOrion.app */,
+				000000000000000000000031 /* MiraAurea.app */,
+				000000000000000000000007 /* MiraTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00000000000000000000106B = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000001055 /* Mira */,
+				000000000000000000001067 /* Orion */,
+				000000000000000000001068 /* Aurea */,
+				000000000000000000001069 /* MiraTests */,
+				00000000000000000000106A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		000000000000000000000005 /* MiraOrion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00000000000000000000000B /* Build configuration list for PBXNativeTarget "MiraOrion" */;
+			buildPhases = (
+				000000000000000000000011 /* Sources */,
+				000000000000000000000012 /* Frameworks */,
+				000000000000000000000013 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+
+			);
+			name = MiraOrion;
+			productName = MiraOrion;
+			productReference = 000000000000000000000004 /* MiraOrion.app */;
+			productType = "com.apple.product-type.application";
+		};
+		000000000000000000000032 /* MiraAurea */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00000000000000000000003B /* Build configuration list for PBXNativeTarget "MiraAurea" */;
+			buildPhases = (
+				000000000000000000000041 /* Sources */,
+				000000000000000000000042 /* Frameworks */,
+				000000000000000000000043 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+
+			);
+			name = MiraAurea;
+			productName = MiraAurea;
+			productReference = 000000000000000000000031 /* MiraAurea.app */;
+			productType = "com.apple.product-type.application";
+		};
+		000000000000000000000053 /* MiraTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00000000000000000000005B /* Build configuration list for PBXNativeTarget "MiraTests" */;
+			buildPhases = (
+				000000000000000000000061 /* Sources */,
+				000000000000000000000062 /* Frameworks */,
+				000000000000000000000063 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				000000000000000000000072 /* PBXTargetDependency */,
+			);
+			name = MiraTests;
+			productName = MiraTests;
+			productReference = 000000000000000000000007 /* MiraTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000000000000000000000006 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2650;
+				LastUpgradeCheck = 2650;
+				TargetAttributes = {
+					000000000000000000000005 = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					000000000000000000000032 = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					000000000000000000000053 = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = 000000000000000000000005;
+					};
+				};
+			};
+			buildConfigurationList = 00000000000000000000000A /* Build configuration list for PBXProject "Mira" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 00000000000000000000106B;
+			productRefGroup = 00000000000000000000106A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				000000000000000000000005 /* MiraOrion */,
+				000000000000000000000032 /* MiraAurea */,
+				000000000000000000000053 /* MiraTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		000000000000000000000013 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00000000000000000000106C /* Assets.xcassets in Resources */,
+				000000000000000000001070 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000043 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00000000000000000000106D /* Assets.xcassets in Resources */,
+				000000000000000000001071 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000063 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		000000000000000000000012 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000042 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000062 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		000000000000000000000011 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				000000000000000000001072 /* LaunchOptions.swift in Sources */,
+				000000000000000000001074 /* MiraRoot.swift in Sources */,
+				000000000000000000001076 /* Brand.swift in Sources */,
+				000000000000000000001078 /* CardArt.swift in Sources */,
+				00000000000000000000107A /* Controls.swift in Sources */,
+				00000000000000000000107C /* CurrencyMark.swift in Sources */,
+				00000000000000000000107E /* IconLibrary.swift in Sources */,
+				000000000000000000001080 /* LivingDot.swift in Sources */,
+				000000000000000000001082 /* SVGMark.swift in Sources */,
+				000000000000000000001084 /* Tokens.swift in Sources */,
+				000000000000000000001086 /* Type.swift in Sources */,
+				000000000000000000001088 /* Wordmark.swift in Sources */,
+				00000000000000000000108A /* AgentRoster.swift in Sources */,
+				00000000000000000000108C /* AgentTask.swift in Sources */,
+				00000000000000000000108E /* AllocationPlan.swift in Sources */,
+				000000000000000000001090 /* CapabilityDocument.swift in Sources */,
+				000000000000000000001092 /* Capacity.swift in Sources */,
+				000000000000000000001094 /* Cards.swift in Sources */,
+				000000000000000000001096 /* ChatThreads.swift in Sources */,
+				000000000000000000001098 /* Checkout.swift in Sources */,
+				00000000000000000000109A /* ConsentPolicy.swift in Sources */,
+				00000000000000000000109C /* ContactsBills.swift in Sources */,
+				00000000000000000000109E /* CorridorSupport.swift in Sources */,
+				0000000000000000000010A0 /* DecisionProvider.swift in Sources */,
+				0000000000000000000010A2 /* Eligibility.swift in Sources */,
+				0000000000000000000010A4 /* IncomePlan.swift in Sources */,
+				0000000000000000000010A6 /* Ledger.swift in Sources */,
+				0000000000000000000010A8 /* Money.swift in Sources */,
+				0000000000000000000010AA /* MoneyDesk.swift in Sources */,
+				0000000000000000000010AC /* MoneyDeskActions.swift in Sources */,
+				0000000000000000000010AE /* Offers.swift in Sources */,
+				0000000000000000000010B0 /* Payments.swift in Sources */,
+				0000000000000000000010B2 /* Pricing.swift in Sources */,
+				0000000000000000000010B4 /* Receipt.swift in Sources */,
+				0000000000000000000010B6 /* Reminders.swift in Sources */,
+				0000000000000000000010B8 /* Rules.swift in Sources */,
+				0000000000000000000010BA /* Scenario.swift in Sources */,
+				0000000000000000000010BC /* StableTransfer.swift in Sources */,
+				0000000000000000000010BE /* Subscriptions.swift in Sources */,
+				0000000000000000000010C0 /* Swap.swift in Sources */,
+				0000000000000000000010C2 /* DepthScene.swift in Sources */,
+				0000000000000000000010C4 /* MotionSource.swift in Sources */,
+				0000000000000000000010C6 /* MiraArt.swift in Sources */,
+				000000000000000000003001 /* DemoPersonas.swift in Sources */,
+				000000000000000000003002 /* GoalArtService.swift in Sources */,
+				000000000000000000003003 /* ProfileChooserView.swift in Sources */,
+				000000000000000000003004 /* PiggyBanksView.swift in Sources */,
+				0000000000000000000010C8 /* AccountsView.swift in Sources */,
+				0000000000000000000010CA /* ActivityView.swift in Sources */,
+				0000000000000000000010CC /* AureaHome.swift in Sources */,
+				0000000000000000000010CE /* AureaMove.swift in Sources */,
+				0000000000000000000010D0 /* AureaOnboarding.swift in Sources */,
+				0000000000000000000010D2 /* AureaOnboardingScenes.swift in Sources */,
+				0000000000000000000010D4 /* SceneStage.swift in Sources */,
+				0000000000000000000010D6 /* SceneTelemetry.swift in Sources */,
+				0000000000000000000010D8 /* AgentTaskCard.swift in Sources */,
+				0000000000000000000010DA /* CardDetailsView.swift in Sources */,
+				0000000000000000000010DC /* ChatHomeView.swift in Sources */,
+				0000000000000000000010DE /* ChatTurnView.swift in Sources */,
+				0000000000000000000010E0 /* ContactsBillsView.swift in Sources */,
+				0000000000000000000010E2 /* MainMenuSheet.swift in Sources */,
+				0000000000000000000010E4 /* ReceiptView.swift in Sources */,
+				0000000000000000000010E6 /* RosterSheet.swift in Sources */,
+				0000000000000000000010E8 /* MiraAgentView.swift in Sources */,
+				0000000000000000000010EA /* MoveView.swift in Sources */,
+				0000000000000000000010EC /* OnboardingView.swift in Sources */,
+				0000000000000000000010EE /* OrionField.swift in Sources */,
+				0000000000000000000010F0 /* OrionHome.swift in Sources */,
+				0000000000000000000010F2 /* OrionOnboarding.swift in Sources */,
+				0000000000000000000010F4 /* OrionStations.swift in Sources */,
+				0000000000000000000010F6 /* TransferConfirmSheet.swift in Sources */,
+				0000000000000000000010F8 /* PlanView.swift in Sources */,
+				0000000000000000000010FA /* YouView.swift in Sources */,
+				0000000000000000000010FC /* BackgroundRefresh.swift in Sources */,
+				0000000000000000000010FE /* ExplanationComposer.swift in Sources */,
+				000000000000000000001100 /* JevProxyClient.swift in Sources */,
+				000000000000000000001102 /* LiveRates.swift in Sources */,
+				000000000000000000001104 /* MiraAgent.swift in Sources */,
+				000000000000000000001106 /* MiraRouteClient.swift in Sources */,
+				000000000000000000001108 /* MiraSession.swift in Sources */,
+				00000000000000000000110A /* ReminderCenter.swift in Sources */,
+				00000000000000000000110C /* SimulatedPaymentProvider.swift in Sources */,
+				00000000000000000000110E /* StandaloneAgent.swift in Sources */,
+				000000000000000000001110 /* TransferRelay.swift in Sources */,
+				000000000000000000001112 /* MiraOrionApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000041 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				000000000000000000001073 /* LaunchOptions.swift in Sources */,
+				000000000000000000001075 /* MiraRoot.swift in Sources */,
+				000000000000000000001077 /* Brand.swift in Sources */,
+				000000000000000000001079 /* CardArt.swift in Sources */,
+				00000000000000000000107B /* Controls.swift in Sources */,
+				00000000000000000000107D /* CurrencyMark.swift in Sources */,
+				00000000000000000000107F /* IconLibrary.swift in Sources */,
+				000000000000000000001081 /* LivingDot.swift in Sources */,
+				000000000000000000001083 /* SVGMark.swift in Sources */,
+				000000000000000000001085 /* Tokens.swift in Sources */,
+				000000000000000000001087 /* Type.swift in Sources */,
+				000000000000000000001089 /* Wordmark.swift in Sources */,
+				00000000000000000000108B /* AgentRoster.swift in Sources */,
+				00000000000000000000108D /* AgentTask.swift in Sources */,
+				00000000000000000000108F /* AllocationPlan.swift in Sources */,
+				000000000000000000001091 /* CapabilityDocument.swift in Sources */,
+				000000000000000000001093 /* Capacity.swift in Sources */,
+				000000000000000000001095 /* Cards.swift in Sources */,
+				000000000000000000001097 /* ChatThreads.swift in Sources */,
+				000000000000000000001099 /* Checkout.swift in Sources */,
+				00000000000000000000109B /* ConsentPolicy.swift in Sources */,
+				00000000000000000000109D /* ContactsBills.swift in Sources */,
+				00000000000000000000109F /* CorridorSupport.swift in Sources */,
+				0000000000000000000010A1 /* DecisionProvider.swift in Sources */,
+				0000000000000000000010A3 /* Eligibility.swift in Sources */,
+				0000000000000000000010A5 /* IncomePlan.swift in Sources */,
+				0000000000000000000010A7 /* Ledger.swift in Sources */,
+				0000000000000000000010A9 /* Money.swift in Sources */,
+				0000000000000000000010AB /* MoneyDesk.swift in Sources */,
+				0000000000000000000010AD /* MoneyDeskActions.swift in Sources */,
+				0000000000000000000010AF /* Offers.swift in Sources */,
+				0000000000000000000010B1 /* Payments.swift in Sources */,
+				0000000000000000000010B3 /* Pricing.swift in Sources */,
+				0000000000000000000010B5 /* Receipt.swift in Sources */,
+				0000000000000000000010B7 /* Reminders.swift in Sources */,
+				0000000000000000000010B9 /* Rules.swift in Sources */,
+				0000000000000000000010BB /* Scenario.swift in Sources */,
+				0000000000000000000010BD /* StableTransfer.swift in Sources */,
+				0000000000000000000010BF /* Subscriptions.swift in Sources */,
+				0000000000000000000010C1 /* Swap.swift in Sources */,
+				0000000000000000000010C3 /* DepthScene.swift in Sources */,
+				0000000000000000000010C5 /* MotionSource.swift in Sources */,
+				0000000000000000000010C7 /* MiraArt.swift in Sources */,
+				000000000000000000003101 /* DemoPersonas.swift in Sources */,
+				000000000000000000003102 /* GoalArtService.swift in Sources */,
+				000000000000000000003103 /* ProfileChooserView.swift in Sources */,
+				000000000000000000003104 /* PiggyBanksView.swift in Sources */,
+				0000000000000000000010C9 /* AccountsView.swift in Sources */,
+				0000000000000000000010CB /* ActivityView.swift in Sources */,
+				0000000000000000000010CD /* AureaHome.swift in Sources */,
+				0000000000000000000010CF /* AureaMove.swift in Sources */,
+				0000000000000000000010D1 /* AureaOnboarding.swift in Sources */,
+				0000000000000000000010D3 /* AureaOnboardingScenes.swift in Sources */,
+				0000000000000000000010D5 /* SceneStage.swift in Sources */,
+				0000000000000000000010D7 /* SceneTelemetry.swift in Sources */,
+				0000000000000000000010D9 /* AgentTaskCard.swift in Sources */,
+				0000000000000000000010DB /* CardDetailsView.swift in Sources */,
+				0000000000000000000010DD /* ChatHomeView.swift in Sources */,
+				0000000000000000000010DF /* ChatTurnView.swift in Sources */,
+				0000000000000000000010E1 /* ContactsBillsView.swift in Sources */,
+				0000000000000000000010E3 /* MainMenuSheet.swift in Sources */,
+				0000000000000000000010E5 /* ReceiptView.swift in Sources */,
+				0000000000000000000010E7 /* RosterSheet.swift in Sources */,
+				0000000000000000000010E9 /* MiraAgentView.swift in Sources */,
+				0000000000000000000010EB /* MoveView.swift in Sources */,
+				0000000000000000000010ED /* OnboardingView.swift in Sources */,
+				0000000000000000000010EF /* OrionField.swift in Sources */,
+				0000000000000000000010F1 /* OrionHome.swift in Sources */,
+				0000000000000000000010F3 /* OrionOnboarding.swift in Sources */,
+				0000000000000000000010F5 /* OrionStations.swift in Sources */,
+				0000000000000000000010F7 /* TransferConfirmSheet.swift in Sources */,
+				0000000000000000000010F9 /* PlanView.swift in Sources */,
+				0000000000000000000010FB /* YouView.swift in Sources */,
+				0000000000000000000010FD /* BackgroundRefresh.swift in Sources */,
+				0000000000000000000010FF /* ExplanationComposer.swift in Sources */,
+				000000000000000000001101 /* JevProxyClient.swift in Sources */,
+				000000000000000000001103 /* LiveRates.swift in Sources */,
+				000000000000000000001105 /* MiraAgent.swift in Sources */,
+				000000000000000000001107 /* MiraRouteClient.swift in Sources */,
+				000000000000000000001109 /* MiraSession.swift in Sources */,
+				00000000000000000000110B /* ReminderCenter.swift in Sources */,
+				00000000000000000000110D /* SimulatedPaymentProvider.swift in Sources */,
+				00000000000000000000110F /* StandaloneAgent.swift in Sources */,
+				000000000000000000001111 /* TransferRelay.swift in Sources */,
+				000000000000000000001113 /* MiraAureaApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000061 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				000000000000000000003201 /* MiraCastTests.swift in Sources */,
+				000000000000000000001114 /* MiraDomainTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		000000000000000000000072 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 000000000000000000000005 /* MiraOrion */;
+			targetProxy = 000000000000000000000071 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		00000000000000000000000C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		00000000000000000000000D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		00000000000000000000000E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Supporting/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.3;
+				MIRA_DISPLAY_NAME = "Mira Orion";
+				PRODUCT_BUNDLE_IDENTIFIER = com.codeaustral.mira.orion;
+				PRODUCT_MODULE_NAME = MiraOrion;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		00000000000000000000000F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Supporting/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.3;
+				MIRA_DISPLAY_NAME = "Mira Orion";
+				PRODUCT_BUNDLE_IDENTIFIER = com.codeaustral.mira.orion;
+				PRODUCT_MODULE_NAME = MiraOrion;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		00000000000000000000003E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Supporting/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.3;
+				MIRA_DISPLAY_NAME = "Mira Aurea";
+				PRODUCT_BUNDLE_IDENTIFIER = com.codeaustral.mira.aurea;
+				PRODUCT_MODULE_NAME = MiraAurea;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		00000000000000000000003F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Supporting/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.3;
+				MIRA_DISPLAY_NAME = "Mira Aurea";
+				PRODUCT_BUNDLE_IDENTIFIER = com.codeaustral.mira.aurea;
+				PRODUCT_MODULE_NAME = MiraAurea;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		00000000000000000000005E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codeaustral.mira.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MiraOrion.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MiraOrion";
+			};
+			name = Debug;
+		};
+		00000000000000000000005F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.3;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codeaustral.mira.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MiraOrion.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MiraOrion";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00000000000000000000000A /* Build configuration list for PBXProject "Mira" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000000000000000000000C /* Debug */,
+				00000000000000000000000D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		00000000000000000000000B /* Build configuration list for PBXNativeTarget "MiraOrion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000000000000000000000E /* Debug */,
+				00000000000000000000000F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		00000000000000000000003B /* Build configuration list for PBXNativeTarget "MiraAurea" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000000000000000000003E /* Debug */,
+				00000000000000000000003F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		00000000000000000000005B /* Build configuration list for PBXNativeTarget "MiraTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00000000000000000000005E /* Debug */,
+				00000000000000000000005F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 000000000000000000000006 /* Project object */;
+}

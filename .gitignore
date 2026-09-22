@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+.build/
+DerivedData/
+build/
+node_modules/
+.vercel/
+.swiftpm/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+.DS_Store
+art/goals/generated/
