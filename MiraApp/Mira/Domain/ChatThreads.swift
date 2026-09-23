@@ -15,8 +15,8 @@ import Foundation
 // The file holds transcript text and typed actions only. It never holds a
 // credential, and a transfer is still only ever booked by the relay.
 
-/// One persisted turn. The display-only pieces (the specialist, the resolved
-/// card) are rebuilt from the shared roster id when the thread is restored.
+/// One persisted turn. The specialist is rebuilt from the shared roster id;
+/// structured documents stay with the answer that produced them.
 struct StoredTurn: Codable, Identifiable, Sendable {
   var id: UUID
   /// "user" or "mira".
@@ -27,6 +27,23 @@ struct StoredTurn: Codable, Identifiable, Sendable {
   var action: AgentAction?
   var replySource: String?
   var isError: Bool
+  var receipt: ReceiptSpec?
+
+  init(
+    id: UUID, role: String, at: Date, text: String, specialistId: String?,
+    action: AgentAction?, replySource: String?, isError: Bool,
+    receipt: ReceiptSpec? = nil
+  ) {
+    self.id = id
+    self.role = role
+    self.at = at
+    self.text = text
+    self.specialistId = specialistId
+    self.action = action
+    self.replySource = replySource
+    self.isError = isError
+    self.receipt = receipt
+  }
 }
 
 /// A named conversation and everything that belongs to continuing it.

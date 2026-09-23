@@ -7,19 +7,22 @@ import Foundation
 // rendered as itself: paper, mono type, dotted rules, a reference you could
 // read out. Facts only; the sentence is what Mira says around it.
 
-struct ReceiptLine: Sendable, Equatable, Hashable {
+struct ReceiptLine: Sendable, Equatable, Hashable, Codable {
   var label: String
   var value: String
+  /// Supporting information that should sit below the primary value.
+  var detail: String? = nil
   /// A system symbol for the kind of thing this row is (a plane, a bag, a tag).
   var icon: String? = nil
   /// A service whose own mark should be drawn instead (Netflix, Notion, …).
   var service: String? = nil
 
-  init(label: String, value: String, icon: String? = nil, service: String? = nil) {
+  init(label: String, value: String, icon: String? = nil, service: String? = nil, detail: String? = nil) {
     self.label = label
     self.value = value
     self.icon = icon
     self.service = service
+    self.detail = detail
   }
 }
 
@@ -86,8 +89,8 @@ struct PlacedOrder: Sendable, Equatable, Codable {
   static let arrivalFootnote = "Arrives today — ask me to track it. Nothing else is charged to this card."
 }
 
-struct ReceiptSpec: Sendable, Equatable {
-  enum Kind: String, Sendable {
+struct ReceiptSpec: Sendable, Equatable, Codable {
+  enum Kind: String, Sendable, Codable {
     /// Something was bought and paid for.
     case purchase
     /// Money changed currency.
@@ -238,13 +241,13 @@ struct ReceiptSpec: Sendable, Equatable {
         // A day number alone ("next 26") says nothing about which month. The
         // next charge is a date, computed from the app's own clock.
         let next = subscription.nextChargeDate(from: date).map {
-          " · next charge \(nextFormatter.string(from: $0))"
-        } ?? ""
+          "Next charge \(nextFormatter.string(from: $0))"
+        }
         // Each row wears the service's own mark, so the list is recognised
         // before it is read.
         return ReceiptLine(
-          label: subscription.name, value: "\(subscription.amount.display)\(next)",
-          service: subscription.name)
+          label: subscription.name, value: subscription.amount.display,
+          service: subscription.name, detail: next)
       }
     return ReceiptSpec(
       kind: .savings,

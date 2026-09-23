@@ -855,6 +855,25 @@ struct ChatThreadTests {
     #expect(restored.proposalStates[restored.turns[1].id.uuidString] == "proposed")
   }
 
+  @Test("a subscription document survives reopening its conversation")
+  func receiptRoundTrip() {
+    let store = ChatThreadStore(path: tempPath())
+    let receipt = ReceiptSpec(
+      kind: .savings, title: "Subscriptions", subtitle: "Every month",
+      lines: [ReceiptLine(label: "Adobe Creative Cloud", value: "USD 59.99", service: "adobe", detail: "Next charge 22 Oct")],
+      date: Date(timeIntervalSince1970: 1_700_000_000))
+    var answer = turn("mira", "11 subscriptions")
+    answer.receipt = receipt
+    let thread = StoredThread(
+      id: UUID(), title: "Subscriptions", createdAt: answer.at, updatedAt: answer.at,
+      activeAgentId: nil, turns: [answer], proposalStates: [:], pendingTo: nil,
+      pendingAsset: nil, pendingAmountMinor: nil)
+    store.save(ChatThreadPayload(activeThreadId: thread.id, threads: [thread]))
+
+    let restored = store.load().threads.first?.turns.first?.receipt
+    #expect(restored == receipt)
+  }
+
   @Test("a missing file reads as an empty, usable payload")
   func missingFile() {
     let payload = ChatThreadStore(path: tempPath()).load()
@@ -3507,11 +3526,11 @@ struct DeskCopyTests {
     let spec = ReceiptSpec.savings(Subscriptions.demoSeed(), date: date)
     // Max charges on the 19th: the row gives the date, not a bare day number.
     let max = spec?.lines.first { $0.label == "Max" }
-    #expect(max?.value.contains("19 Sep") == true)
+    #expect(max?.detail?.contains("19 Sep") == true)
     // Adobe on the 22nd. No row is just "next 22".
     let adobe = spec?.lines.first { $0.label == "Adobe Creative Cloud" }
-    #expect(adobe?.value.contains("22 Sep") == true)
-    #expect(spec?.lines.allSatisfy { !$0.value.contains("next 2") } == true)
+    #expect(adobe?.detail?.contains("22 Sep") == true)
+    #expect(spec?.lines.allSatisfy { !($0.detail ?? "").contains("next 2") } == true)
   }
 }
 

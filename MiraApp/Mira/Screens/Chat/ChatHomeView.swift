@@ -306,6 +306,7 @@ struct ChatHomeView: View {
             ForEach(session.conversation) { turn in
               ChatTurnView(
                 turn: turn, showsChips: chipTurnIds.contains(turn.id))
+                .id(turn.id)
                 // An answer arrives rather than pops: a short fade with a small
                 // rise. A user's own message is already on screen by the time it
                 // is read, so it does not travel.
@@ -365,12 +366,21 @@ struct ChatHomeView: View {
   private func scrollToLatest(_ proxy: ScrollViewProxy, viewport: CGFloat, animated: Bool) {
     guard !session.isShowingExampleConversation else { return }
     guard contentHeight > viewport + 40 else { return }
+    let target: AnyHashable
+    let anchor: UnitPoint
+    if let last = session.conversation.last, last.receipt?.kind == .savings {
+      target = last.id
+      anchor = .top
+    } else {
+      target = Self.bottomAnchor
+      anchor = .bottom
+    }
     if animated {
       withAnimation(.easeOut(duration: 0.25)) {
-        proxy.scrollTo(Self.bottomAnchor, anchor: .bottom)
+        proxy.scrollTo(target, anchor: anchor)
       }
     } else {
-      proxy.scrollTo(Self.bottomAnchor, anchor: .bottom)
+      proxy.scrollTo(target, anchor: anchor)
     }
   }
 

@@ -55,6 +55,43 @@ struct ReceiptCardView: View {
     }
   }
 
+  /// A recurring charge gets two calm lines: identity and amount first, date
+  /// below. Keeping the amount out of the date's text prevents either column
+  /// from breaking into the other on an iPhone.
+  private func subscriptionRow(_ line: ReceiptLine) -> some View {
+    HStack(alignment: .top, spacing: Space.sm) {
+      if let service = line.service {
+        ServiceMark(name: service, size: 26)
+          .padding(.top, 1)
+          .accessibilityHidden(true)
+      }
+
+      VStack(alignment: .leading, spacing: 4) {
+        HStack(alignment: .firstTextBaseline, spacing: Space.xs) {
+          Text(line.label)
+            .font(MiraFont.label(14))
+            .foregroundStyle(brand.text)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
+
+          Text(line.value)
+            .font(.system(size: 14, weight: .semibold, design: .monospaced))
+            .foregroundStyle(brand.text)
+            .fixedSize(horizontal: true, vertical: false)
+        }
+
+        if let detail = line.detail {
+          Text(detail)
+            .font(MiraFont.caption(12))
+            .foregroundStyle(brand.textSecondary)
+        }
+      }
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .padding(.vertical, Space.xs)
+    .accessibilityElement(children: .combine)
+  }
+
   private var label: String {
     switch receipt.kind {
     case .purchase: return "RECEIPT"
@@ -274,9 +311,23 @@ struct ReceiptCardView: View {
 
       DashedRule()
 
-      VStack(alignment: .leading, spacing: 6) {
-        ForEach(receipt.lines, id: \.self) { line in
-          lineRow(line)
+      if receipt.kind == .savings {
+        VStack(spacing: 0) {
+          ForEach(receipt.lines, id: \.self) { line in
+            subscriptionRow(line)
+            if line != receipt.lines.last {
+              Rectangle()
+                .fill(brand.hairline)
+                .frame(height: 1)
+                .accessibilityHidden(true)
+            }
+          }
+        }
+      } else {
+        VStack(alignment: .leading, spacing: 6) {
+          ForEach(receipt.lines, id: \.self) { line in
+            lineRow(line)
+          }
         }
       }
 

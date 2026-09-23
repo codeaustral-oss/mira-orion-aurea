@@ -651,7 +651,8 @@ final class MiraSession {
       specialistId: turn.specialist?.id,
       action: turn.action,
       replySource: turn.replySource,
-      isError: turn.isError)
+      isError: turn.isError,
+      receipt: turn.receipt)
   }
 
   private func makeTurn(_ stored: StoredTurn) -> ConversationTurn {
@@ -665,7 +666,8 @@ final class MiraSession {
       },
       action: stored.action,
       replySource: stored.replySource,
-      isError: stored.isError)
+      isError: stored.isError,
+      receipt: stored.receipt)
   }
 
   // MARK: Seeding
