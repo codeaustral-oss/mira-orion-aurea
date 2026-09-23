@@ -33,6 +33,12 @@ enum GoalArtLibrary {
           asset: "goal-orion-thiago-runway", label: "One year of runway",
           words: ["runway", "a year off", "financial independence", "freedom fund", "year of runway"]),
         GoalArtEntry(
+          asset: "goal-orion-lib-balloon", label: "A hot air balloon",
+          words: ["hot air balloon", "balloon ride", "balloon flight"]),
+        GoalArtEntry(
+          asset: "goal-orion-lib-lisbon", label: "Summer in Lisbon",
+          words: ["lisbon", "lisboa", "summer in portugal"]),
+        GoalArtEntry(
           asset: "goal-orion-valentina-studio", label: "Studio deposit",
           words: ["studio", "design studio", "studio deposit", "workspace"]),
         GoalArtEntry(
@@ -360,6 +366,7 @@ final class GoalArtService {
     case idle
     case drawing
     case ready
+    case failed
   }
 
   let brand: BrandKind
@@ -385,14 +392,43 @@ final class GoalArtService {
     }
     if let image = images[goal.id] { return image }
     if let image = diskCache[goal.id] { return image }
-    guard let url = GoalArtCache.fileURL(for: goal.id),
-      let image = UIImage(contentsOfFile: url.path)
-    else { return nil }
-    diskCache[goal.id] = image
-    return image
+    if let url = GoalArtCache.fileURL(for: goal.id),
+      let image = UIImage(contentsOfFile: url.path) {
+      diskCache[goal.id] = image
+      return image
+    }
+    // Older dreams were saved while the proxy was unavailable. Newly bundled
+    // art should also repair those existing records, not only new dreams.
+    if let asset = GoalArtLibrary.match(goal.name, brand: brand) {
+      return MiraArt.image(named: asset)
+    }
+    return nil
   }
 
   func isDrawing(_ goal: Goal) -> Bool { phase[goal.id] == .drawing }
+  func didFail(_ goal: Goal) -> Bool { phase[goal.id] == .failed }
+
+  /// A persisted dream without art may have been created before the app quit.
+  /// Resume it when its shelf opens, while leaving a visible retry after a
+  /// failed attempt in this session.
+  func resumeMissingArt(for goals: [Goal], in store: LocalDirectoryStore) {
+    for goal in goals where image(for: goal) == nil && phase[goal.id] == nil {
+      startDrawing(goal, in: store)
+    }
+  }
+
+  func retryDrawing(_ goal: Goal, in store: LocalDirectoryStore) {
+    guard phase[goal.id] != .drawing else { return }
+    startDrawing(goal, in: store)
+  }
+
+  private func startDrawing(_ goal: Goal, in store: LocalDirectoryStore) {
+    guard image(for: goal) == nil, drawingTasks[goal.id] == nil else { return }
+    phase[goal.id] = .drawing
+    drawingTasks[goal.id] = Task { [weak self] in
+      await self?.draw(goal, in: store)
+    }
+  }
 
   /// A new dream. The catalog is checked first — a match is instant — and only
   /// an unmatched dream is drawn. The goal is persisted before anything
@@ -426,10 +462,7 @@ final class GoalArtService {
       phase[goal.id] = .ready
       return goal
     }
-    phase[goal.id] = .drawing
-    drawingTasks[goal.id] = Task { [weak self] in
-      await self?.draw(goal, in: store)
-    }
+    startDrawing(goal, in: store)
     return goal
   }
 
@@ -441,23 +474,31 @@ final class GoalArtService {
 
   private func draw(_ goal: Goal, in store: LocalDirectoryStore) async {
     defer {
-      phase[goal.id] = .ready
       drawingTasks[goal.id] = nil
     }
     guard
       let outcome = await generator.generate(
         words: goal.name, name: goal.name, brand: brand, goalId: goal.id)
-    else { return }
+    else {
+      phase[goal.id] = .failed
+      return
+    }
 
     switch outcome {
     case .asset(let asset):
       var updated = goal
       updated.artAsset = asset
       store.saveGoal(updated)
+      phase[goal.id] = MiraArt.image(named: asset) == nil ? .failed : .ready
     case .cached(let url):
-      if let image = UIImage(contentsOfFile: url.path) { images[goal.id] = image }
+      if let image = UIImage(contentsOfFile: url.path) {
+        images[goal.id] = image
+        phase[goal.id] = .ready
+      } else {
+        phase[goal.id] = .failed
+      }
     case .none:
-      break
+      phase[goal.id] = .failed
     }
   }
 }

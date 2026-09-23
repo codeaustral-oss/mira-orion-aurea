@@ -77,6 +77,9 @@ struct PiggyBanksView: View {
       guard let shelfBeforeCreate, let newest, newest != shelfBeforeCreate else { return }
       withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.45)) { currentPage = newest }
     }
+    .onAppear {
+      art.resumeMissingArt(for: goals, in: session.localDirectory)
+    }
   }
 
   // MARK: The shelf
@@ -232,9 +235,7 @@ struct DreamPage: View {
     .animation(reduceMotion ? nil : .easeOut(duration: 0.5), value: artState)
   }
 
-  /// The art, the state of a drawing in flight, or nothing at all. A missing
-  /// image is a quieter page — never a placeholder shape standing in for the
-  /// dream.
+  /// The art or an explicit state while the drawing is in flight or needs a retry.
   @ViewBuilder
   private var artwork: some View {
     if let image = art.image(for: goal) {
@@ -264,6 +265,21 @@ struct DreamPage: View {
       .frame(height: artBox)
       .transition(.opacity)
       .accessibilityElement(children: .combine)
+    } else if art.didFail(goal) {
+      VStack(spacing: Space.sm) {
+        Image(systemName: "arrow.clockwise")
+          .font(.system(size: 23, weight: .light))
+          .foregroundStyle(brand.textSecondary)
+        Text("Drawing paused")
+          .font(MiraFont.body(15))
+          .foregroundStyle(brand.textSecondary)
+        Text("Open this dream to try again.")
+          .font(MiraFont.caption(12))
+          .foregroundStyle(brand.textTertiary)
+      }
+      .frame(maxWidth: .infinity)
+      .frame(height: artBox)
+      .accessibilityElement(children: .combine)
     }
   }
 
@@ -280,7 +296,8 @@ struct DreamPage: View {
   /// in flight to a finished drawing can be a fade rather than a pop.
   private var artState: String {
     if art.image(for: goal) != nil { return "art" }
-    return art.isDrawing(goal) ? "drawing" : "none"
+    if art.isDrawing(goal) { return "drawing" }
+    return art.didFail(goal) ? "failed" : "none"
   }
 
   private var progress: Double {
@@ -484,6 +501,7 @@ struct NewDreamSheet: View {
 // MARK: - One dream, opened
 
 struct GoalDetailSheet: View {
+  @Environment(MiraSession.self) private var session
   @Environment(\.brand) private var brand
   @Environment(\.dismiss) private var dismiss
 
@@ -505,6 +523,22 @@ struct GoalDetailSheet: View {
                 .scaledToFit()
                 .frame(maxWidth: .infinity)
                 .frame(maxHeight: 340)
+            } else if art.isDrawing(goal) {
+              Label("Mira is drawing it", systemImage: "paintbrush")
+                .font(MiraFont.body(16))
+                .foregroundStyle(brand.textSecondary)
+                .frame(maxWidth: .infinity, minHeight: 180)
+            } else if art.didFail(goal) {
+              VStack(spacing: Space.sm) {
+                Text("The drawing couldn't finish.")
+                  .font(MiraFont.body(16))
+                  .foregroundStyle(brand.textSecondary)
+                Button("Try drawing again") {
+                  art.retryDrawing(goal, in: session.localDirectory)
+                }
+                .buttonStyle(MiraButtonStyle(kind: .secondary, fullWidth: false))
+              }
+              .frame(maxWidth: .infinity, minHeight: 180)
             }
 
             VStack(alignment: .leading, spacing: Space.xs) {

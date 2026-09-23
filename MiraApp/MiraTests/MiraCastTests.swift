@@ -309,10 +309,18 @@ struct GoalArtLibraryTests {
   @Test("nothing close is nil, not the nearest guess")
   func noMatch() {
     for brand in BrandKind.allCases {
-      for words in ["", "   ", "a hot air balloon", "a submarine", "dragon", "12345"] {
+      for words in ["", "   ", "a submarine", "dragon", "12345"] {
         #expect(GoalArtLibrary.match(words, brand: brand) == nil, "\(brand) \(words)")
       }
     }
+  }
+
+  @Test("balloon and Lisbon dreams have bundled artwork")
+  func repairedDreamArt() {
+    #expect(GoalArtLibrary.match("A hot air balloon", brand: .orion) == "goal-orion-lib-balloon")
+    #expect(GoalArtLibrary.match("Summer in Lisbon", brand: .orion) == "goal-orion-lib-lisbon")
+    #expect(MiraArt.image(named: "goal-orion-lib-balloon") != nil)
+    #expect(MiraArt.image(named: "goal-orion-lib-lisbon") != nil)
   }
 
   @Test("each brand carries at least forty synonyms")
@@ -556,7 +564,7 @@ struct GoalArtServiceTests {
 
     guard
       let goal = service.create(
-        name: "a hot air balloon",
+        name: "a submarine",
         target: Money(majorUnits: 1_200, currency: .usd),
         currency: .usd,
         in: store)
@@ -569,7 +577,7 @@ struct GoalArtServiceTests {
     #expect(goal.artAsset == nil)
     #expect(service.isDrawing(goal))
     let created = store.goals.first { $0.id == goal.id }
-    #expect(created?.name == "a hot air balloon")
+    #expect(created?.name == "a submarine")
     #expect(created?.targetMinor == 120_000)
     #expect(created?.currencyCode == "USD")
 
@@ -588,11 +596,11 @@ struct GoalArtServiceTests {
       Issue.record("the created dream should persist")
       return
     }
-    #expect(persisted.name == "a hot air balloon")
+    #expect(persisted.name == "a submarine")
     #expect(GoalArtCache.fileURL(for: persisted.id) != nil)
   }
 
-  @Test("when the drawing fails the card stays quiet and the goal still persists")
+  @Test("when drawing fails the goal offers a retry and still persists")
   func failedDrawing() async {
     let directory = tempDirectory()
     defer { try? FileManager.default.removeItem(at: directory) }
@@ -612,11 +620,43 @@ struct GoalArtServiceTests {
     await service.waitForDrawing(goal.id)
 
     #expect(!service.isDrawing(goal))
+    #expect(service.didFail(goal))
     #expect(service.image(for: goal) == nil)
     let created = store.goals.first { $0.id == goal.id }
     #expect(created != nil)
     #expect(created?.artAsset == nil)
     #expect(created?.targetMinor == 0)
+  }
+
+  @Test("older blank goals recover bundled artwork")
+  func existingDreamArt() {
+    let service = GoalArtService(brand: .orion, generator: StubGenerator(draws: false))
+    for name in ["A hot air balloon", "Summer in Lisbon"] {
+      let goal = Goal(
+        name: name, targetMinor: 0, savedMinor: 0, currencyCode: "USD",
+        protected: true, artAsset: nil, story: nil, createdAt: Date())
+      #expect(service.image(for: goal) != nil)
+    }
+  }
+
+  @Test("a saved unfinished drawing resumes and can be retried")
+  func resumeDrawing() async {
+    let directory = tempDirectory()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let store = store(in: directory)
+    let goal = Goal(
+      name: "a submarine", targetMinor: 0, savedMinor: 0, currencyCode: "USD",
+      protected: true, artAsset: nil, story: nil, createdAt: Date())
+    store.saveGoal(goal)
+    let service = GoalArtService(brand: .orion, generator: StubGenerator(draws: false))
+    service.resumeMissingArt(for: store.goals, in: store)
+    #expect(service.isDrawing(goal))
+    await service.waitForDrawing(goal.id)
+    #expect(service.didFail(goal))
+    service.retryDrawing(goal, in: store)
+    #expect(service.isDrawing(goal))
+    await service.waitForDrawing(goal.id)
+    #expect(service.didFail(goal))
   }
 
   @Test("an empty name is never a dream")

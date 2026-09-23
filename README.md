@@ -32,7 +32,7 @@ xcodebuild -project MiraApp/Mira.xcodeproj -scheme MiraAurea \
   -destination 'platform=iOS Simulator,name=<your simulator>' build
 ```
 
-The proxy is optional for browsing the app and its built-in profile stories. For local proxy development, configure `.env` and run `./scripts/serve.sh`. Credentials stay on the server and are excluded from this repository. `MIRA_UDID=<simulator-udid> ./scripts/install-simulator.sh` builds and installs both brands; without a proxy key, the installed apps use local behavior.
+The proxy is optional for browsing the app and its built-in profile stories. For local proxy development, configure `.env` and run `./scripts/serve.sh`. Credentials stay on the server and are excluded from this repository. `MIRA_UDID=<simulator-udid> ./scripts/install-simulator.sh` builds and installs both brands; without a proxy key, the installed apps use local behavior. Use this installer for a hosted-proxy simulator build: a raw Xcode build does not carry the proxy URL or key, so installing it directly replaces the connected app with a loopback-only one.
 
 ## Architecture
 
