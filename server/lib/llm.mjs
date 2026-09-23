@@ -86,6 +86,7 @@ export async function callModel(
     /// on its own thinking and return an empty message, which is indistinguishable
     /// from a refusal — and was how finished runs became "no structured result".
     maxTokens = null,
+    maxAttempts: requestedMaxAttempts = null,
     fetchImpl = globalThis.fetch,
     signal,
   } = {}
@@ -110,7 +111,8 @@ export async function callModel(
   // last key is still retried — bounded either way, and never fewer than three
   // attempts for a single-account deployment.
   const credentials = orderedKeys();
-  const maxAttempts = Math.max(3, credentials.length + 1);
+  const maxAttempts = Number.isInteger(requestedMaxAttempts) && requestedMaxAttempts > 0
+    ? requestedMaxAttempts : Math.max(3, credentials.length + 1);
   let lastFailure = { ok: false, detail: "The model call failed." };
   let credentialIndex = 0;
 

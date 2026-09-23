@@ -169,7 +169,7 @@ function missingRequired(capability, slots, message = "") {
  * runs, a moment apart, and the person never learns it happened.
  */
 const TRANSIENT_AGENT_FAILURE =
-  /(server_error|failed to generate a response|no usable result|timed out|timeout|ECONNRESET|socket hang up|\b429\b|\b50\d\b)/i;
+  /(server_error|failed to generate a response|returned no message|no usable result|timed out|timeout|ECONNRESET|socket hang up|\b429\b|\b50\d\b)/i;
 
 const MAX_TRANSIENT_RETRIES = 2;
 

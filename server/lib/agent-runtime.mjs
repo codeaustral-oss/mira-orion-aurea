@@ -15,6 +15,7 @@ import { makeWebSearch } from "./search.mjs";
 import { browserAvailable } from "./browser-read.mjs";
 import { createToolset, runLimitedAgent, evidenceSummary } from "./limited-agent.mjs";
 import { runHermes, hermesRuntimeStatus } from "./hermes.mjs";
+import { shoppingSearchFallback } from "./shopping-fallback.mjs";
 
 export const TASK_RUNTIME = process.env.MIRA_TASK_RUNTIME === "hermes" ? "hermes" : "limited";
 
@@ -111,6 +112,12 @@ export async function runTaskAgent(task, { onChild, onProgress, signal } = {}) {
     deadlineMs: DEADLINE_MS,
     signal,
   });
-  if (!outcome.ok) return { ok: false, detail: outcome.detail, evidence: outcome.evidence };
+  if (!outcome.ok) {
+    if (["shopping", "travel", "restaurant", "research", "auction"].includes(task.kind) && !signal?.aborted) {
+      const fallback = await shoppingSearchFallback(task, { signal });
+      if (fallback) return fallback;
+    }
+    return { ok: false, detail: outcome.detail, evidence: outcome.evidence };
+  }
   return { ok: true, result: outcome.result, evidence: evidenceSummary(outcome.evidence) };
 }

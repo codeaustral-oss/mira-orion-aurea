@@ -206,6 +206,10 @@ export async function runLimitedAgent({
       json: Boolean(forceAnswer),
       maxTokens: forceAnswer ? 4_000 : null,
       reasoning: forceAnswer ? "low" : undefined,
+      // A phone task needs a bounded answer. If the provider stalls, the task
+      // runtime can use grounded search evidence instead of waiting minutes.
+      timeoutMs: Math.max(2_000, Math.min(12_000, Math.floor((deadlineMs - (now() - started)) / 2))),
+      maxAttempts: 2,
       signal,
     });
     if (signal?.aborted) return fail("Stopped at your request.");

@@ -517,6 +517,11 @@ test("the model client retries transient 5xx but not client errors", async () =>
     assert.equal(retried.ok, true);
     assert.equal(calls, 3);
 
+    calls = 0;
+    const bounded = await callModel({ messages: [], fetchImpl: flaky, timeoutMs: 5_000, maxAttempts: 2 });
+    assert.equal(bounded.ok, false);
+    assert.equal(calls, 2, "phone tasks stop provider retries before the wait becomes long");
+
     let clientCalls = 0;
     const client = async () => {
       clientCalls += 1;
