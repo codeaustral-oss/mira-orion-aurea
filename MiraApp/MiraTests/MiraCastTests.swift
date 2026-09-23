@@ -1128,13 +1128,10 @@ struct ProxyTransportTests {
     #expect(MiraProxyConfig.key(info: [:]) == nil)
   }
 
-  @Test("a development build carries no key, so it can only speak to loopback")
+  @Test("an unconfigured bundle uses loopback unless the simulator has saved configuration")
   func developmentBuild() {
-    // The app bundles built from this repository set neither value; only
-    // `scripts/point-app.sh` writes them into an installed bundle.
-    #expect(MiraProxyConfig.key == nil)
-    #expect(MiraProxyConfig.hostedURL == nil)
-    #expect(JevProxyClient.defaultBaseURL == URL(string: "http://127.0.0.1:8791"))
-    #expect(URLSession.miraProxy.configuration.httpAdditionalHeaders?["x-mira-key"] == nil)
+    #expect(MiraProxyConfig.key(info: [:]) == nil)
+    #expect(MiraProxyConfig.url(info: [:]) == nil)
+    #expect(MiraProxyConfig.baseURL(info: [:]) == URL(string: "http://127.0.0.1:8791"))
   }
 }

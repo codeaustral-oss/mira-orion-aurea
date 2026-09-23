@@ -1,4 +1,5 @@
 import Foundation
+import Security
 
 // MARK: - Where the proxy lives, and how a build proves it may call it
 
@@ -10,14 +11,90 @@ import Foundation
 /// repository or in the app binary. Every reader below is injectable so the
 /// precedence can be pinned by tests rather than only by reading the code.
 enum MiraProxyConfig {
+  private struct SavedSimulatorProxy: Codable {
+    let url: String
+    let key: String
+  }
+
+  /// Xcode test runs reinstall the app without the install-time Info.plist
+  /// values. Keep the last configured simulator endpoint in its private data
+  /// container so the next launch does not fall back to the Mac's loopback.
+  /// The Keychain copy is preferred when the test build has the same signature.
+  private static let runtimeInfo: [String: Any] = {
+    let installed = Bundle.main.infoDictionary ?? [:]
+    #if targetEnvironment(simulator)
+    if let key = key(info: installed) {
+      let address = url(info: installed)?.absoluteString
+        ?? legacyHost(info: installed).map { "http://\($0):8791" }
+      if let address {
+        saveSimulatorProxy(SavedSimulatorProxy(url: address, key: key))
+        return installed
+      }
+    }
+    if let saved = loadSimulatorProxy() ?? loadSimulatorProxyFile() {
+      return ["MIRAProxyURL": saved.url, "MIRAProxyKey": saved.key]
+    }
+    #endif
+    return installed
+  }()
+
+  private static let simulatorProxyAccount = "configured-proxy"
+
+  private static var simulatorProxyFile: URL? {
+    FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?
+      .appendingPathComponent("MiraProxyConfig.json")
+  }
+
+  private static func loadSimulatorProxyFile() -> SavedSimulatorProxy? {
+    guard let file = simulatorProxyFile, let data = try? Data(contentsOf: file) else { return nil }
+    return try? JSONDecoder().decode(SavedSimulatorProxy.self, from: data)
+  }
+
+  private static func loadSimulatorProxy() -> SavedSimulatorProxy? {
+    let query: [String: Any] = [
+      kSecClass as String: kSecClassGenericPassword,
+      kSecAttrService as String: "com.codeaustral.mira.simulator-proxy",
+      kSecAttrAccount as String: simulatorProxyAccount,
+      kSecReturnData as String: true,
+      kSecMatchLimit as String: kSecMatchLimitOne,
+    ]
+    var result: CFTypeRef?
+    guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess,
+      let data = result as? Data
+    else { return nil }
+    return try? JSONDecoder().decode(SavedSimulatorProxy.self, from: data)
+  }
+
+  private static func saveSimulatorProxy(_ proxy: SavedSimulatorProxy) {
+    guard let data = try? JSONEncoder().encode(proxy) else { return }
+    if let file = simulatorProxyFile {
+      try? FileManager.default.createDirectory(
+        at: file.deletingLastPathComponent(), withIntermediateDirectories: true)
+      try? data.write(to: file, options: [.atomic, .completeFileProtectionUnlessOpen])
+    }
+    let query: [String: Any] = [
+      kSecClass as String: kSecClassGenericPassword,
+      kSecAttrService as String: "com.codeaustral.mira.simulator-proxy",
+      kSecAttrAccount as String: simulatorProxyAccount,
+    ]
+    let updated = SecItemUpdate(query as CFDictionary, [kSecValueData as String: data] as CFDictionary)
+    guard updated == errSecItemNotFound else { return }
+    var created = query
+    created[kSecValueData as String] = data
+    created[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+    SecItemAdd(created as CFDictionary, nil)
+  }
+
   /// A full URL, used exactly as written, e.g. `https://mira.codeaustral.com`.
-  static var hostedURL: URL? { url(info: Bundle.main.infoDictionary ?? [:]) }
+  static var hostedURL: URL? { url(info: runtimeInfo) }
 
   /// The legacy local-network host, rendered as `http://<host>:8791`.
-  static var legacyHost: String? { legacyHost(info: Bundle.main.infoDictionary ?? [:]) }
+  static var legacyHost: String? { legacyHost(info: runtimeInfo) }
 
   /// The key the deployed proxy asks for. Absent in a development build.
-  static var key: String? { key(info: Bundle.main.infoDictionary ?? [:]) }
+  static var key: String? { key(info: runtimeInfo) }
+
+  static var runtimeBaseURL: URL { baseURL(info: runtimeInfo) }
 
   /// The hosted URL wins because a build that names a full address is a build
   /// that means it; the legacy host is the local-network fallback; loopback is
@@ -105,7 +182,7 @@ struct JevProxyClient: DecisionProvider {
   /// is present (a simulator build, or a phone with no proxy nearby, where the
   /// app then reports the model as unreachable rather than inventing an answer).
   static var defaultBaseURL: URL {
-    MiraProxyConfig.baseURL(info: Bundle.main.infoDictionary ?? [:])
+    MiraProxyConfig.runtimeBaseURL
   }
 
   func classify(state: String, sessionId: String) async -> DecisionResult {

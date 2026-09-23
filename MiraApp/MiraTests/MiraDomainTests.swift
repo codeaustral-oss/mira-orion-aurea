@@ -1283,6 +1283,7 @@ struct GreetingTests {
   func greetingsInTheirLanguage() {
     #expect(StandaloneAgent.greeting(for: "hi")?.say == "Hey. What can I help you with?")
     #expect(StandaloneAgent.greeting(for: "Hey!")?.say == "Hey. What can I help you with?")
+    #expect(StandaloneAgent.greeting(for: "Hye")?.say == "Hey. What can I help you with?")
     #expect(StandaloneAgent.greeting(for: "hello Mira")?.say == "Hey. What can I help you with?")
     #expect(StandaloneAgent.greeting(for: "oi")?.say == "Oi. Como posso ajudar?")
     #expect(StandaloneAgent.greeting(for: "Bom dia!")?.say == "Oi. Como posso ajudar?")

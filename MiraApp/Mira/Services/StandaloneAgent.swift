@@ -292,7 +292,7 @@ enum StandaloneAgent {
     // A repeated hello ("hi hi", "hey hey mira") is still a hello. Every word
     // must be a greeting word: "hi find me shoes" has a request inside it and
     // stays a request.
-    let englishWords: Set<String> = ["hi", "hey", "hello", "yo"]
+    let englishWords: Set<String> = ["hi", "hey", "hye", "hello", "yo"]
     let portugueseWords: Set<String> = ["oi", "ola"]
     let spanishWords: Set<String> = ["hola"]
     if words.allSatisfy({ englishWords.contains($0) }) {
