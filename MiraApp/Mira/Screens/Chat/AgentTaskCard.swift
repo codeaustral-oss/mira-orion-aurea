@@ -243,7 +243,7 @@ struct AgentTaskCard: View {
 
     if !task.options.isEmpty {
       Rule()
-      optionsSection(task.options)
+      optionsSection(task.options, shopping: task.kind == "shopping")
     }
 
     if let next = task.nextStep, !next.isEmpty {
@@ -325,26 +325,41 @@ struct AgentTaskCard: View {
   /// reads a notch stronger than the alternatives; every row is a line a person
   /// can act on: what it is, why it is worth their time, and what it costs if
   /// the page said.
-  private func optionsSection(_ options: [AgentTask.Option]) -> some View {
+  private func optionsSection(_ options: [AgentTask.Option], shopping: Bool) -> some View {
     VStack(alignment: .leading, spacing: Space.sm) {
       sectionLabel("Mira's picks", count: options.count)
       VStack(spacing: 0) {
         ForEach(Array(options.enumerated()), id: \.element.id) { index, option in
           if index > 0 { Rule() }
-          optionRow(option, isLead: index == 0)
+          optionRow(option, isLead: index == 0, shopping: shopping)
         }
       }
     }
   }
 
   @ViewBuilder
-  private func optionRow(_ option: AgentTask.Option, isLead: Bool) -> some View {
-    if let raw = option.url, let destination = Self.webURL(raw) {
-      Link(destination: destination) { optionBody(option, opens: true, isLead: isLead) }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Open \(option.name)")
-    } else {
-      optionBody(option, opens: false, isLead: isLead)
+  private func optionRow(_ option: AgentTask.Option, isLead: Bool, shopping: Bool) -> some View {
+    VStack(alignment: .leading, spacing: Space.xxs) {
+      if let raw = option.url, let destination = Self.webURL(raw) {
+        Link(destination: destination) { optionBody(option, opens: true, isLead: isLead) }
+          .buttonStyle(.plain)
+          .accessibilityLabel("Open \(option.name)")
+      } else {
+        optionBody(option, opens: false, isLead: isLead)
+      }
+      if shopping {
+        Button("Choose") {
+          let merchant = option.url.flatMap {
+            URL(string: $0)?.host?.replacingOccurrences(of: "www.", with: "")
+          }
+          session.startCheckout(
+            item: option.name, merchant: merchant,
+            amount: CheckoutFlow.amount(from: option.priceNote))
+        }
+        .buttonStyle(TaskQuietButtonStyle())
+        .accessibilityLabel("Choose \(option.name)")
+        .padding(.bottom, Space.xxs)
+      }
     }
   }
 

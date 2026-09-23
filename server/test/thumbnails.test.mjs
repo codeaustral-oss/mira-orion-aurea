@@ -28,6 +28,14 @@ test("og:image is read from the page's own metadata", () => {
   assert.equal(imageFromHtml(html, "https://shop.example/p/1"), "https://cdn.shop.example/shoe.jpg");
 });
 
+test("site icons do not replace product photos", () => {
+  const html = `<head>
+    <meta property="og:image" content="https://shop.example/android-icon-192x192.png">
+    <meta name="twitter:image" content="https://cdn.shop.example/running-shoe.jpg">
+  </head>`;
+  assert.equal(imageFromHtml(html, "https://shop.example/shoes"), "https://cdn.shop.example/running-shoe.jpg");
+});
+
 test("twitter:image is the fallback when og:image is absent", () => {
   const html = `<head><meta name="twitter:image" content="https://cdn.shop.example/shoe.png"></head>`;
   assert.equal(imageFromHtml(html, "https://shop.example/p/1"), "https://cdn.shop.example/shoe.png");

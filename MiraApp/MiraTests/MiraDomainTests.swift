@@ -4640,7 +4640,21 @@ struct EverydayQuestionTests {
     #expect(await session.loadEverydayChats() == 50)
     #expect(session.activeThreadId == original)
     #expect(session.threads.filter { $0.collectionId == "everyday-50-v1" }.count == 50)
+    #expect(session.threads.filter { $0.collectionId == "everyday-50-v1" }
+      .allSatisfy { $0.title.first?.isNumber != true })
     #expect(await session.loadEverydayChats() == 0)
+    let shopping = session.threads.first { $0.title == "Buy running shoes" }
+    #expect(shopping?.turns.count == 1)
+    #expect(shopping?.turns.first?.role == "user")
+    let split = session.threads.first { $0.title == "Split USD 120 with Ana and Rui" }
+    #expect(split?.turns.count == 1)
+    if let split {
+      session.selectThread(split.id)
+      await session.refreshLiveLibraryChatIfNeeded()
+      #expect(session.conversation.last?.chips.contains("Ana paid me") == true)
+      await session.sendChat("Ana paid me")
+      #expect(session.conversation.last?.text.contains("Ana is square") == true)
+    }
     guard let subscriptions = session.threads.first(where: { $0.title.contains("Show all subscriptions") }) else {
       Issue.record("Subscriptions chat missing")
       return
@@ -4649,6 +4663,24 @@ struct EverydayQuestionTests {
     #expect(session.conversation.last?.receipt?.kind == .savings)
     #expect(session.conversation.last?.chips.contains("Cancel Adobe Creative Cloud") == true)
     #expect(store.load().threads.count == 51)
+
+    var legacy = store.load()
+    if let index = legacy.threads.firstIndex(where: { $0.title == "Buy running shoes" }) {
+      legacy.threads[index].title = "39. Buy running shoes"
+      legacy.threads[index].turns.append(StoredTurn(
+        id: UUID(), role: "mira", at: Date(),
+        text: "I can simulate buying running shoes. What price should I use?",
+        specialistId: nil, action: nil, replySource: nil, isError: false))
+      store.save(legacy)
+      let restored = MiraSession(
+        sessionId: "saved-50", chatStore: store,
+        taskStore: AgentTaskStore(path: directory.appendingPathComponent("tasks.json")),
+        directory: LocalDirectoryStore(path: directory.appendingPathComponent("directory.json")),
+        routeClient: NoRoute(),
+        defaults: UserDefaults(suiteName: "mira-saved-50-restored-\(UUID().uuidString)")!)
+      let repaired = restored.threads.first { $0.title == "Buy running shoes" }
+      #expect(repaired?.turns.count == 1)
+    }
   }
 
   @Test("new chat does not inherit an unfinished purchase")
@@ -4739,6 +4771,12 @@ struct EverydayQuestionTests {
         defaults: UserDefaults(suiteName: "mira-50-\(UUID().uuidString)")!)
       await session.sendChat(item.0)
       let answer = session.conversation.last
+      if EverydayChatPrompts.shopping.contains(item.0) {
+        #expect(session.checkout == nil, "Case \(index + 1): shopping needs listings first")
+        #expect(answer?.text.hasPrefix("I can simulate buying") != true)
+        try? FileManager.default.removeItem(at: directory)
+        continue
+      }
       #expect(answer?.role == .mira, "Case \(index + 1): \(item.0)")
       #expect(answer?.isError == false, "Case \(index + 1): \(item.0) → \(answer?.text ?? "no reply")")
       #expect(answer?.text.lowercased().contains(item.1) == true,

@@ -54,6 +54,13 @@ enum EverydayChatPrompts {
     "What if my package is damaged?",
     "What can you actually do?",
   ]
+
+  static let shopping: Set<String> = [
+    "Buy cat food", "Purchase headphones", "Buy a book", "Buy running shoes",
+  ]
+
+  /// These first turns create work or profile state, so run them when opened.
+  static let onOpen: Set<String> = shopping.union(["Split USD 120 with Ana and Rui"])
 }
 
 // MARK: - Persisted conversations

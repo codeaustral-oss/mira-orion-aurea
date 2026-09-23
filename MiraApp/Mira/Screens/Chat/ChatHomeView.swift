@@ -116,6 +116,9 @@ struct ChatHomeView: View {
     .sheet(item: $route) { destination in
       routeView(destination)
     }
+    .onAppear {
+      Task { await session.refreshLiveLibraryChatIfNeeded() }
+    }
     .onChange(of: session.requestedTab) { _, requested in
       guard let requested else { return }
       route = HomeRoute(tab: requested)
@@ -132,6 +135,7 @@ struct ChatHomeView: View {
       // A draft belongs to the conversation it was typed in. Switching threads
       // or starting a new chat must never carry unsent text into another one.
       draft = ""
+      Task { await session.refreshLiveLibraryChatIfNeeded() }
     }
   }
 

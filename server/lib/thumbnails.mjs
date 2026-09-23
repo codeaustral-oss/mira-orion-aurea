@@ -114,14 +114,14 @@ export function imageFromHtml(html, pageUrl) {
     const key = (attrs.property || attrs.name || "").toLowerCase();
     if (!IMAGE_KEYS.has(key) || !attrs.content) continue;
     const image = absoluteImageUrl(attrs.content, pageUrl);
-    if (image) return image;
+    if (usablePhoto(image, 0, 0)) return image;
   }
 
   for (const match of value.match(/<link\b[^>]*>/gi) || []) {
     const attrs = attributesOf(match);
     if ((attrs.rel || "").toLowerCase() !== "image_src" || !attrs.href) continue;
     const image = absoluteImageUrl(attrs.href, pageUrl);
-    if (image) return image;
+    if (usablePhoto(image, 0, 0)) return image;
   }
 
   return null;
@@ -256,6 +256,9 @@ async function imageSearchToken(query, { fetchImpl, timeoutMs }) {
 function usablePhoto(image, width, height) {
   if (!image) return false;
   if (/\.svg($|\?)/i.test(image)) return false;
+  // Site icons and wordmarks are not pictures of the product. Nike's running
+  // hub, for example, advertises android-icon-192x192.png as its share image.
+  if (/(?:^|[\/_-])(?:android-icon|apple-touch-icon|favicon|logo|brandmark|wordmark|sprite)(?:[._/-]|$)/i.test(new URL(image).pathname)) return false;
   const w = Number(width) || 0;
   const h = Number(height) || 0;
   if (w && w < 240) return false;

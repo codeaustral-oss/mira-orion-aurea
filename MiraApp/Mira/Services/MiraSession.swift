@@ -374,6 +374,7 @@ final class MiraSession {
   @ObservationIgnored private let chatStore: ChatThreadStore
   @ObservationIgnored private let includeExampleConversation: Bool
   @ObservationIgnored private var isRestoringThread = false
+  @ObservationIgnored private var liveLibraryRuns: Set<UUID> = []
 
   // MARK: Agent tasks
 
@@ -502,6 +503,19 @@ final class MiraSession {
     var added = 0
     let baseDate = Date().addingTimeInterval(-Double(EverydayChatPrompts.all.count))
     for (index, prompt) in EverydayChatPrompts.all.enumerated() {
+      let date = baseDate.addingTimeInterval(Double(index))
+      if EverydayChatPrompts.onOpen.contains(prompt) {
+        threads.append(StoredThread(
+          id: UUID(), title: prompt, createdAt: date, updatedAt: date,
+          activeAgentId: nil,
+          turns: [StoredTurn(
+            id: UUID(), role: "user", at: date, text: prompt,
+            specialistId: nil, action: nil, replySource: nil, isError: false)],
+          proposalStates: [:], pendingTo: nil, pendingAsset: nil, pendingAmountMinor: nil,
+          collectionId: "everyday-50-v1"))
+        added += 1
+        continue
+      }
       let directory = FileManager.default.temporaryDirectory
         .appendingPathComponent("mira-chat-library-\(UUID().uuidString)", isDirectory: true)
       let isolated = MiraSession(
@@ -514,11 +528,12 @@ final class MiraSession {
         defaults: UserDefaults(suiteName: "mira-chat-library-\(UUID().uuidString)")!)
       await isolated.sendChat(prompt)
       if let answer = isolated.conversation.last, answer.role == .mira, !answer.isError {
-        let date = baseDate.addingTimeInterval(Double(index))
         threads.append(StoredThread(
-          id: UUID(), title: "\(index + 1). \(prompt)", createdAt: date, updatedAt: date,
+          id: UUID(), title: prompt, createdAt: date, updatedAt: date,
           activeAgentId: nil, turns: isolated.conversation.map(Self.storeTurn),
-          proposalStates: [:], pendingTo: nil, pendingAsset: nil, pendingAmountMinor: nil,
+          proposalStates: [:], pendingTo: isolated.pendingTransfer?.to,
+          pendingAsset: isolated.pendingTransfer?.asset,
+          pendingAmountMinor: isolated.pendingTransfer?.amountMinor,
           collectionId: "everyday-50-v1"))
         added += 1
       }
@@ -526,6 +541,24 @@ final class MiraSession {
     }
     saveThreads()
     return added
+  }
+
+  /// Entries that need live research or saved state start when opened.
+  func refreshLiveLibraryChatIfNeeded() async {
+    guard let id = activeThreadId,
+      let thread = threads.first(where: { $0.id == id && $0.collectionId == "everyday-50-v1" }),
+      let prompt = thread.turns.first?.text,
+      EverydayChatPrompts.onOpen.contains(prompt),
+      !liveLibraryRuns.contains(id), !isWorking
+    else { return }
+    guard conversation.count == 1 || conversation.last?.isError == true else { return }
+    liveLibraryRuns.insert(id)
+    defer { liveLibraryRuns.remove(id) }
+    if conversation.last?.isError == true {
+      conversation.removeLast()
+      persistCurrentThread()
+    }
+    await sendChatTurn(prompt, started: Date(), appendUser: false)
   }
 
   func openProfileStory() {
@@ -592,8 +625,23 @@ final class MiraSession {
     let payload = chatStore.load()
     let ownedByAnother = payload.profileSlug.map { $0 != persona.id } ?? false
     threads = (droppingForeignTranscript || ownedByAnother) ? [] : payload.threads
-    for index in threads.indices where threads[index].title == "Example conversation" {
-      threads[index].title = ExampleConversation.title(for: persona)
+    for index in threads.indices {
+      if threads[index].title == "Example conversation" {
+        threads[index].title = ExampleConversation.title(for: persona)
+      }
+      guard threads[index].collectionId == "everyday-50-v1" else { continue }
+      if let prompt = threads[index].turns.first?.text {
+        threads[index].title = prompt
+        if EverydayChatPrompts.shopping.contains(prompt),
+          threads[index].turns.last?.role == "mira",
+          threads[index].turns.last?.text.hasPrefix("I can simulate buying ") == true {
+          threads[index].turns.removeLast()
+        }
+        if prompt == "Split USD 120 with Ana and Rui", threads[index].turns.count == 2,
+          threads[index].turns.last?.role == "mira" {
+          threads[index].turns.removeLast()
+        }
+      }
     }
     if threads.isEmpty {
       if includeExampleConversation {
@@ -1702,14 +1750,15 @@ final class MiraSession {
     lastTurnLatencyMs = Int(Date().timeIntervalSince(started) * 1000)
   }
 
-  private func sendChatTurn(_ text: String, started: Date) async {
+  private func sendChatTurn(_ text: String, started: Date, appendUser: Bool = true) async {
     let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty else { return }
+    let threadAtStart = activeThreadId
 
     // The user is in the conversation now; a received-transfer line from earlier
     // has been seen and does not need to sit at the bottom of the transcript.
     clearRelayNotice()
-    appendTurn(ConversationTurn(role: .user, text: trimmed))
+    if appendUser { appendTurn(ConversationTurn(role: .user, text: trimmed)) }
 
     guard controls.assistantEnabled else {
       appendTurn(
@@ -1796,7 +1845,9 @@ final class MiraSession {
     // in a short reply, or on the web. Answered from the device when it is a
     // record question — that is what makes ordinary asks feel instant, and it is
     // the router's whole purpose.
-    if let routed = await routeClient.route(trimmed, baseURL: orchestrator.baseURL) {
+    let routedIntent = await routeClient.route(trimmed, baseURL: orchestrator.baseURL)
+    guard activeThreadId == threadAtStart else { return }
+    if let routed = routedIntent {
       switch routed.route {
       case "advice":
         appendTurn(
@@ -1879,6 +1930,7 @@ final class MiraSession {
       place: localDirectory.mainAddress?.text
     )
     isWorking = false
+    guard activeThreadId == threadAtStart else { return }
 
     switch result {
     case .success(let routed):
@@ -4779,6 +4831,9 @@ final class MiraSession {
       // receipt states what was charged instead of leaving the amount blank.
       let known = CheckoutFlow.knownPick(for: item, in: Array(tasks.values))
       let amount = known?.amount ?? CheckoutFlow.amount(from: text)
+      // A category or unpriced product needs real listings first. Asking the
+      // user to invent a price here bypasses shopping research and thumbnails.
+      guard amount != nil else { return false }
       startCheckout(
         item: item,
         merchant: known?.merchant,

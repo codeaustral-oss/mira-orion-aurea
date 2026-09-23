@@ -251,14 +251,9 @@ struct DreamPage: View {
       VStack(spacing: Space.sm) {
         MiraDot(size: 10, pulsing: true)
         VStack(spacing: 4) {
-          Text("Mira is drawing it")
+          Text("Creating artwork")
             .font(MiraFont.body(15))
             .foregroundStyle(brand.textSecondary)
-          Text("Drawn from scratch — usually under two minutes.")
-            .font(MiraFont.caption(12))
-            .foregroundStyle(brand.textTertiary)
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
         }
       }
       .frame(maxWidth: .infinity)
@@ -524,7 +519,7 @@ struct GoalDetailSheet: View {
                 .frame(maxWidth: .infinity)
                 .frame(maxHeight: 340)
             } else if art.isDrawing(goal) {
-              Label("Mira is drawing it", systemImage: "paintbrush")
+              Label("Creating artwork", systemImage: "paintbrush")
                 .font(MiraFont.body(16))
                 .foregroundStyle(brand.textSecondary)
                 .frame(maxWidth: .infinity, minHeight: 180)
