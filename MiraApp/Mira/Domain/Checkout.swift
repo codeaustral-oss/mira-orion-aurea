@@ -18,6 +18,8 @@ struct Address: Codable, Sendable, Equatable, Identifiable {
 }
 
 enum CheckoutStage: String, Sendable {
+  /// What amount should this demo charge? Never invent a price.
+  case price
   /// Where should it go?
   case place
   /// Shall this be the main delivery address?
@@ -60,6 +62,10 @@ enum CheckoutFlow {
       let phrase = String(text[match]).replacingOccurrences(
         of: pattern, with: "$1", options: [.regularExpression, .caseInsensitive])
       let cleaned = phrase.trimmingCharacters(in: CharacterSet(charactersIn: " .!?"))
+        .replacingOccurrences(
+          of: "\\s+(?:for|at)\\s+(?:USD|US\\$|EUR|€|BRL|R\\$)\\s*[0-9][0-9.,]*$",
+          with: "", options: [.regularExpression, .caseInsensitive])
+        .trimmingCharacters(in: CharacterSet(charactersIn: " .!?"))
       // "buy it" and "order that" are context, not a name; "buy something else"
       // is an intention, not an item.
       if cleaned.count >= 2, !isContextReference(cleaned), !isFillerItem(cleaned) { return cleaned }
@@ -149,7 +155,7 @@ enum CheckoutFlow {
   static func amount(from priceNote: String?) -> Money? {
     guard let priceNote else { return nil }
     let match = priceNote.range(
-      of: "(USD|US\\$|EUR|€|BRL|R\\$)\\s?([0-9]+(?:[.,][0-9]{1,2})?)",
+      of: "(USD|US\\$|EUR|€|BRL|R\\$)\\s?([0-9][0-9.,]*)",
       options: [.regularExpression, .caseInsensitive])
     guard let match else { return nil }
     let text = String(priceNote[match])
@@ -161,10 +167,20 @@ enum CheckoutFlow {
     } else {
       asset = .brl
     }
-    let digits = text.replacingOccurrences(
-      of: "[^0-9.,]", with: "", options: .regularExpression)
-      .replacingOccurrences(of: ",", with: ".")
-    guard let value = Decimal(string: digits) else { return nil }
+    let digits = text.replacingOccurrences(of: "[^0-9.,]", with: "", options: .regularExpression)
+      .trimmingCharacters(in: CharacterSet(charactersIn: ".,"))
+    let lastDot = digits.lastIndex(of: ".")
+    let lastComma = digits.lastIndex(of: ",")
+    let decimalMark = [lastDot, lastComma].compactMap { $0 }.max()
+    let places = decimalMark.map { digits.distance(from: digits.index(after: $0), to: digits.endIndex) } ?? 0
+    let hasBoth = lastDot != nil && lastComma != nil
+    let isDecimal = decimalMark != nil && (hasBoth || places <= 2)
+    let normalized = String(digits.enumerated().compactMap { offset, character -> Character? in
+      guard character == "." || character == "," else { return character }
+      let index = digits.index(digits.startIndex, offsetBy: offset)
+      return isDecimal && index == decimalMark ? "." : nil
+    })
+    guard let value = Decimal(string: normalized), value > 0 else { return nil }
     return Money(majorUnits: value, currency: asset)
   }
 

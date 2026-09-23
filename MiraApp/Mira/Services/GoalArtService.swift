@@ -402,11 +402,20 @@ final class GoalArtService {
   func create(name: String, target: Money?, currency: Asset, in store: LocalDirectoryStore) -> Goal? {
     let cleaned = name.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !cleaned.isEmpty else { return nil }
+    let targetMinor = target?.minorUnits ?? 0
+    let currencyCode = (target?.currency ?? currency).code
+    if let existing = store.goals.first(where: {
+      $0.name.compare(cleaned, options: [.caseInsensitive, .diacriticInsensitive]) == .orderedSame
+        && $0.targetMinor == targetMinor
+        && $0.currencyCode == currencyCode
+    }) {
+      return existing
+    }
     let goal = Goal(
       name: cleaned,
-      targetMinor: target?.minorUnits ?? 0,
+      targetMinor: targetMinor,
       savedMinor: 0,
-      currencyCode: (target?.currency ?? currency).code,
+      currencyCode: currencyCode,
       protected: true,
       artAsset: GoalArtLibrary.match(cleaned, brand: brand),
       story: nil,

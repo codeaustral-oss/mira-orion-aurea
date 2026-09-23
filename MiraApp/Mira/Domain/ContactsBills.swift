@@ -74,6 +74,8 @@ struct LocalDirectoryPayload: Codable, Sendable {
   var claimCases: [ClaimCase] = []
   var agentBudgets: [AgentBudget] = []
   var goals: [Goal] = []
+  var cardPurchases: [JournalEntry] = []
+  var lastOrder: PlacedOrder?
   var splits: [SplitBill] = []
   var flaggedCharges: [FlaggedCharge] = []
   var creditLimitMinor: Int64 = 0
@@ -111,6 +113,8 @@ struct LocalDirectoryPayload: Codable, Sendable {
     claimCases = ((try? c.decodeIfPresent([ClaimCase].self, forKey: .claimCases)) ?? nil) ?? []
     agentBudgets = ((try? c.decodeIfPresent([AgentBudget].self, forKey: .agentBudgets)) ?? nil) ?? []
     goals = ((try? c.decodeIfPresent([Goal].self, forKey: .goals)) ?? nil) ?? []
+    cardPurchases = ((try? c.decodeIfPresent([JournalEntry].self, forKey: .cardPurchases)) ?? nil) ?? []
+    lastOrder = (try? c.decodeIfPresent(PlacedOrder.self, forKey: .lastOrder)) ?? nil
     splits = ((try? c.decodeIfPresent([SplitBill].self, forKey: .splits)) ?? nil) ?? []
     flaggedCharges = ((try? c.decodeIfPresent([FlaggedCharge].self, forKey: .flaggedCharges)) ?? nil) ?? []
     creditLimitMinor = ((try? c.decodeIfPresent(Int64.self, forKey: .creditLimitMinor)) ?? nil) ?? 0
@@ -143,6 +147,8 @@ final class LocalDirectoryStore {
   private(set) var claimCases: [ClaimCase] = []
   private(set) var agentBudgets: [AgentBudget] = []
   private(set) var goals: [Goal] = []
+  private(set) var cardPurchases: [JournalEntry] = []
+  private(set) var lastOrder: PlacedOrder?
   private(set) var splits: [SplitBill] = []
   private(set) var flaggedCharges: [FlaggedCharge] = []
   private(set) var creditLimitMinor: Int64 = 0
@@ -458,6 +464,18 @@ final class LocalDirectoryStore {
     persist()
   }
 
+  func saveCardPurchase(_ entry: JournalEntry, order: PlacedOrder) {
+    guard !cardPurchases.contains(where: { $0.idempotencyKey == entry.idempotencyKey }) else { return }
+    cardPurchases.append(entry)
+    lastOrder = order
+    persist()
+  }
+
+  func updateLastOrder(_ order: PlacedOrder) {
+    lastOrder = order
+    persist()
+  }
+
   func resolveFlaggedCharge(_ id: UUID) {
     flaggedCharges.removeAll { $0.id == id }
     persist()
@@ -590,6 +608,8 @@ final class LocalDirectoryStore {
     claimCases = []
     agentBudgets = []
     goals = persona.goals
+    cardPurchases = []
+    lastOrder = nil
     splits = []
     flaggedCharges = persona.flagged
     creditLimitMinor = persona.creditLimitMinor
@@ -625,6 +645,8 @@ final class LocalDirectoryStore {
       claimCases = payload.claimCases
       agentBudgets = payload.agentBudgets
       goals = payload.goals
+      cardPurchases = payload.cardPurchases
+      lastOrder = payload.lastOrder
       splits = payload.splits
       flaggedCharges = payload.flaggedCharges
       creditLimitMinor = payload.creditLimitMinor
@@ -712,6 +734,8 @@ final class LocalDirectoryStore {
     payload.claimCases = claimCases
     payload.agentBudgets = agentBudgets
     payload.goals = goals
+    payload.cardPurchases = cardPurchases
+    payload.lastOrder = lastOrder
     payload.splits = splits
     payload.flaggedCharges = flaggedCharges
     payload.creditLimitMinor = creditLimitMinor

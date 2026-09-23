@@ -395,6 +395,7 @@ struct NewDreamSheet: View {
 
   @State private var name = ""
   @State private var targetText = ""
+  @State private var isCreating = false
   @FocusState private var nameFocused: Bool
 
   private var cleanedName: String {
@@ -440,8 +441,8 @@ struct NewDreamSheet: View {
 
           Button("Create the dream") { create() }
             .buttonStyle(MiraButtonStyle(kind: .primary, fullWidth: true))
-            .disabled(cleanedName.isEmpty)
-            .opacity(cleanedName.isEmpty ? 0.5 : 1)
+            .disabled(cleanedName.isEmpty || isCreating)
+            .opacity(cleanedName.isEmpty || isCreating ? 0.5 : 1)
 
           Text("The dream is saved on this device. Mira draws it; nothing here moves money.")
             .font(MiraFont.caption(12))
@@ -460,7 +461,8 @@ struct NewDreamSheet: View {
   }
 
   private func create() {
-    guard !cleanedName.isEmpty else { return }
+    guard !cleanedName.isEmpty, !isCreating else { return }
+    isCreating = true
     art.create(
       name: cleanedName,
       target: parsedTarget,

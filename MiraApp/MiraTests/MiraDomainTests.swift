@@ -1387,6 +1387,8 @@ struct CheckoutFlowTests {
     #expect(CheckoutFlow.namedPurchaseItem(in: "buy the Brooks Ghost 15") == "Brooks Ghost 15")
     #expect(CheckoutFlow.namedPurchaseItem(in: "order the Nike ones") == "Nike ones")
     #expect(CheckoutFlow.namedPurchaseItem(in: "I'll take the Pegasus 41") == "Pegasus 41")
+    #expect(CheckoutFlow.namedPurchaseItem(in: "buy a notebook for USD 25") == "notebook")
+    #expect(CheckoutFlow.namedPurchaseItem(in: "buy a notebook for USD 25.") == "notebook")
     // A search stays research.
     #expect(CheckoutFlow.namedPurchaseItem(in: "find me running shoes") == nil)
     #expect(CheckoutFlow.namedPurchaseItem(in: "what is a good laptop") == nil)
@@ -1425,6 +1427,8 @@ struct CheckoutFlowTests {
     #expect(CheckoutFlow.amount(from: "USD 99.95")?.display == "USD 99.95")
     #expect(CheckoutFlow.amount(from: "EUR 89")?.display == "EUR 89.00")
     #expect(CheckoutFlow.amount(from: "R$ 1.299,00")?.currency == .brl)
+    #expect(CheckoutFlow.amount(from: "R$ 1.299,00")?.display == "BRL 1,299.00")
+    #expect(CheckoutFlow.amount(from: "USD 25.00, please")?.display == "USD 25.00")
     #expect(CheckoutFlow.amount(from: "on sale") == nil)
     #expect(CheckoutFlow.amount(from: nil) == nil)
   }
@@ -1866,8 +1870,8 @@ struct SubscriptionTests {
     #expect(spec?.kind == .savings)
     #expect(spec?.title == "12 subscriptions")
     #expect(spec?.total?.label == "A year")
-    #expect(spec?.lines.count == 7) // six named, then "…and six more"
-    #expect(spec?.lines.last?.label.contains("more") == true)
+    #expect(spec?.lines.count == 12)
+    #expect(spec?.lines.allSatisfy { $0.service != nil } == true)
     #expect(spec?.footnote?.contains("Nothing is cancelled until you say so") == true)
   }
 }

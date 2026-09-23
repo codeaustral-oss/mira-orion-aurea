@@ -460,6 +460,11 @@ final class MiraSession {
     }
 
     seed(persona: persona, now: now)
+    for entry in localDirectory.cardPurchases {
+      _ = try? ledger.post(entry)
+    }
+    plan.total = ledger.clearedSpendableUSD
+    lastOrder = localDirectory.lastOrder
     restoreConversations(droppingForeignTranscript: reseededDirectory)
     restoreTasks()
   }
@@ -4285,6 +4290,7 @@ final class MiraSession {
     let lowered = text.lowercased()
     let mentionsSubscriptions =
       lowered.contains("subscription") || lowered.contains("subscri") || lowered.contains("recurring")
+      || lowered.range(of: "\\bsubs\\b", options: .regularExpression) != nil
     let cancelIntent =
       lowered.range(of: "\\b(cancel|stop paying|stop|drop|unsubscribe|cut)\\b", options: .regularExpression) != nil
     let saveIntent =
@@ -4546,6 +4552,7 @@ final class MiraSession {
     guard var order = lastOrder else { return false }
     order = order.advanced()
     lastOrder = order
+    localDirectory.updateLastOrder(order)
     appendMira(
       order.statusLine,
       chips: order.isDelivered ? [] : ["Track it"],
@@ -4587,6 +4594,20 @@ final class MiraSession {
         return true
       }
       switch draft.stage {
+      case .price:
+        guard let amount = CheckoutFlow.amount(from: text) else {
+          appendMira("Tell me the price with its currency, for example USD 25.00, so I can show the card charge before placing it.", flow: "checkout")
+          return true
+        }
+        draft.amount = amount
+        draft.stage = .place
+        checkout = draft
+        if let main = draft.address {
+          return advanceToPayment(&draft, note: "Delivering to your main address — \(main.text).")
+        }
+        appendMira("\(amount.display) for \(draft.item). Where should it go?", flow: "checkout")
+        return true
+
       case .place:
         if CheckoutFlow.wantsMainAddressAnswer(text), let main = localDirectory.mainAddress {
           draft.address = main
@@ -4683,11 +4704,12 @@ final class MiraSession {
       // A price the app already has — the research card's own — is used, so the
       // receipt states what was charged instead of leaving the amount blank.
       let known = CheckoutFlow.knownPick(for: item, in: Array(tasks.values))
+      let amount = known?.amount ?? CheckoutFlow.amount(from: text)
       startCheckout(
         item: item,
         merchant: known?.merchant,
-        amount: known?.amount,
-        authorised: await carriesAuthorisation(text, amount: known?.amount))
+        amount: amount,
+        authorised: await carriesAuthorisation(text, amount: amount))
       return true
     }
     if CheckoutFlow.isContextPurchase(text), let pick = topPickContext() {
@@ -4772,6 +4794,13 @@ final class MiraSession {
       item: item, merchant: merchant, amount: amount,
       address: localDirectory.mainAddress, card: nil, stage: .place)
 
+    guard amount != nil else {
+      draft.stage = .price
+      checkout = draft
+      appendMira("I can simulate buying \(item). What price should I use? Give the amount and currency, for example USD 25.00.", flow: "checkout")
+      return
+    }
+
     if let main = draft.address {
       if authorised {
         // Given: standing approval, or the person said it in the message. The
@@ -4793,9 +4822,22 @@ final class MiraSession {
   /// platform step is labelled as the handoff it is. In this demo the order is
   /// as real as every other figure in the ledger — it is the store that isn't.
   private func placeOrder(_ draft: CheckoutDraft) {
+    var draft = draft
+    guard let amount = draft.amount, amount.minorUnits > 0 else {
+      draft.stage = .price
+      checkout = draft
+      appendMira("What price should I use? Give the amount and currency before I charge the card.", flow: "checkout")
+      return
+    }
+    draft.card = draft.card ?? mainCard
+    guard draft.card?.frozen != true else {
+      checkout = nil
+      appendMira("Your card is frozen. No order was placed.", flow: "checkout")
+      return
+    }
     // A purchase that is large against a protected goal stops once, with the
     // trade-off stated, until the person overrides it.
-    if let amount = draft.amount, !draft.goalOverride,
+    if !draft.goalOverride,
       let warning = GoalGuard.warning(purchase: amount, goals: localDirectory.goals)
     {
       checkout = draft
@@ -4804,27 +4846,35 @@ final class MiraSession {
     }
     // The flow is over the moment the order is placed: without this the next
     // message ("Track it") was read as another checkout answer and looped.
-    checkout = nil
     let reference = "M-\(Int.random(in: 10_000...99_999))"
-    if let amount = draft.amount {
-      let entry = JournalEntry(
-        idempotencyKey: "order-\(reference)",
-        date: Date(),
-        memo: "Order \(draft.merchant ?? "store") — \(draft.item)",
-        postings: [
-          Posting(accountId: "world.usd", amount: amount),
-          Posting(
-            accountId: "usd.cleared",
-            amount: Money(minorUnits: -amount.minorUnits, currency: amount.currency)),
-        ])
-      _ = try? ledger.post(entry)
+    let assetKey = amount.currency.code.lowercased()
+    let entry = JournalEntry(
+      idempotencyKey: "order-\(reference)",
+      date: Date(),
+      memo: "Card \(draft.card?.last4 ?? "") · \(draft.item)",
+      postings: [
+        Posting(accountId: "world.\(assetKey)", amount: amount),
+        Posting(
+          accountId: Ledger.accountId(for: amount.currency),
+          amount: Money(minorUnits: -amount.minorUnits, currency: amount.currency)),
+      ])
+    do {
+      guard try ledger.post(entry) else { return }
+    } catch {
+      checkout = nil
+      appendMira("I couldn't record the card charge, so no order was placed.", flow: "checkout")
+      return
     }
+    checkout = nil
+    plan.total = ledger.clearedSpendableUSD
     let cardLine = draft.card.map { " Paid with the card ending \($0.last4)." } ?? ""
     record(
       .payment, "Order placed — \(reference)",
-      "\(draft.item)\(draft.merchant.map { " from \($0)" } ?? "")\(draft.amount.map { " · \($0.display)" } ?? "") to \(draft.address?.text ?? "your address").")
-    lastOrder = PlacedOrder(
+      "\(draft.item)\(draft.merchant.map { " from \($0)" } ?? "") · \(amount.display) to \(draft.address?.text ?? "your address").\(cardLine)")
+    let placedOrder = PlacedOrder(
       reference: reference, item: draft.item, merchant: draft.merchant)
+    lastOrder = placedOrder
+    localDirectory.saveCardPurchase(entry, order: placedOrder)
 
     // Three things the app now knows because a purchase happened: a price to
     // watch inside the return window, an agent budget that was used, and the

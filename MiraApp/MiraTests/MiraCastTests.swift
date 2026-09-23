@@ -631,6 +631,20 @@ struct GoalArtServiceTests {
     #expect(goal == nil)
     #expect(store.goals.count == before)
   }
+
+  @Test("creating the same dream twice reuses its record")
+  func duplicateDream() {
+    let directory = tempDirectory()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let store = store(in: directory)
+    let service = GoalArtService(brand: .orion, generator: StubGenerator(draws: false))
+
+    let first = service.create(name: "A hot air balloon", target: nil, currency: .usd, in: store)
+    let second = service.create(name: "  a hot air balloon  ", target: nil, currency: .usd, in: store)
+
+    #expect(first?.id == second?.id)
+    #expect(store.goals.filter { $0.name == "A hot air balloon" }.count == 1)
+  }
 }
 
 // MARK: The wire
@@ -796,6 +810,127 @@ struct PiggyBanksRouteTests {
     if let id = session.conversation.last?.id {
       #expect(session.chipTurnIds.contains(id))
     }
+  }
+}
+
+@MainActor
+@Suite("Subscription language", .serialized)
+struct SubscriptionLanguageTests {
+  @Test("a request to save money from subs shows the person's subscription receipt")
+  func colloquialSubs() async {
+    let directory = FileManager.default.temporaryDirectory
+      .appendingPathComponent("mira-subs-\(UUID().uuidString)", isDirectory: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let suiteName = "mira-subs-\(UUID().uuidString)"
+    let defaults = UserDefaults(suiteName: suiteName) ?? .standard
+    defer { defaults.removePersistentDomain(forName: suiteName) }
+
+    let session = MiraSession(
+      sessionId: "subs-test",
+      brand: .orion,
+      persona: DemoPersonas.persona(id: "orion-thiago")!,
+      chatStore: ChatThreadStore(path: directory.appendingPathComponent("chats.json")),
+      taskStore: AgentTaskStore(path: directory.appendingPathComponent("tasks.json")),
+      directory: LocalDirectoryStore(path: directory.appendingPathComponent("directory.json")),
+      defaults: defaults)
+
+    await session.sendChat("I need to save money from my subs")
+
+    let reply = session.conversation.last
+    #expect(reply?.receipt?.kind == .savings)
+    #expect(reply?.receipt?.lines.contains { $0.service == "Max" } == true)
+    #expect(reply?.action?.kind != .agentTask)
+  }
+}
+
+@MainActor
+@Suite("Simulated card checkout", .serialized)
+struct SimulatedCardCheckoutTests {
+  private func session() -> (MiraSession, URL, UserDefaults, String) {
+    let directory = FileManager.default.temporaryDirectory
+      .appendingPathComponent("mira-checkout-\(UUID().uuidString)", isDirectory: true)
+    let suiteName = "mira-checkout-\(UUID().uuidString)"
+    let defaults = UserDefaults(suiteName: suiteName) ?? .standard
+    let session = MiraSession(
+      sessionId: "checkout-test",
+      brand: .orion,
+      persona: DemoPersonas.persona(id: "orion-thiago")!,
+      chatStore: ChatThreadStore(path: directory.appendingPathComponent("chats.json")),
+      taskStore: AgentTaskStore(path: directory.appendingPathComponent("tasks.json")),
+      directory: LocalDirectoryStore(path: directory.appendingPathComponent("directory.json")),
+      defaults: defaults)
+    session.localDirectory.saveAddress("Florianópolis, Brazil", makeMain: true)
+    return (session, directory, defaults, suiteName)
+  }
+
+  @Test("a priced purchase charges the selected card and shows a receipt")
+  func pricedPurchase() async {
+    let (session, directory, defaults, suiteName) = session()
+    defer {
+      try? FileManager.default.removeItem(at: directory)
+      defaults.removePersistentDomain(forName: suiteName)
+    }
+    let before = session.ledger.clearedSpendableUSD.minorUnits
+
+    await session.sendChat("buy a notebook for USD 25")
+    #expect(session.checkout?.stage == .payment)
+    await session.sendChat("Use this card")
+
+    let reply = session.conversation.last
+    #expect(session.checkout == nil)
+    #expect(reply?.receipt?.kind == .purchase)
+    #expect(reply?.receipt?.total?.value == "USD 25.00")
+    #expect(reply?.receipt?.lines.contains { $0.label == "Paid with" && $0.value.contains(session.mainCard.last4) } == true)
+    #expect(session.ledger.clearedSpendableUSD.minorUnits == before - 2_500)
+    #expect(session.lastOrder != nil)
+
+    let reopened = MiraSession(
+      sessionId: "checkout-reopened",
+      brand: .orion,
+      persona: DemoPersonas.persona(id: "orion-thiago")!,
+      chatStore: ChatThreadStore(path: directory.appendingPathComponent("chats.json")),
+      taskStore: AgentTaskStore(path: directory.appendingPathComponent("tasks.json")),
+      directory: LocalDirectoryStore(path: directory.appendingPathComponent("directory.json")),
+      defaults: defaults)
+    #expect(reopened.ledger.clearedSpendableUSD.minorUnits == before - 2_500)
+    #expect(reopened.lastOrder?.reference == session.lastOrder?.reference)
+  }
+
+  @Test("an unpriced purchase asks for a price before any card charge")
+  func unpricedPurchase() async {
+    let (session, directory, defaults, suiteName) = session()
+    defer {
+      try? FileManager.default.removeItem(at: directory)
+      defaults.removePersistentDomain(forName: suiteName)
+    }
+    let before = session.ledger.clearedSpendableUSD.minorUnits
+
+    await session.sendChat("buy a notebook")
+    #expect(session.checkout?.stage == .price)
+    #expect(session.ledger.clearedSpendableUSD.minorUnits == before)
+    #expect(session.lastOrder == nil)
+
+    await session.sendChat("USD 25")
+    #expect(session.checkout?.stage == .payment)
+    await session.sendChat("Use this card")
+    #expect(session.conversation.last?.receipt?.total?.value == "USD 25.00")
+    #expect(session.ledger.clearedSpendableUSD.minorUnits == before - 2_500)
+  }
+
+  @Test("a BRL card purchase changes the BRL balance")
+  func brlPurchase() async {
+    let (session, directory, defaults, suiteName) = session()
+    defer {
+      try? FileManager.default.removeItem(at: directory)
+      defaults.removePersistentDomain(forName: suiteName)
+    }
+    let before = session.ledger.brlBalance.minorUnits
+
+    await session.sendChat("buy a notebook for BRL 25")
+    await session.sendChat("Use this card")
+
+    #expect(session.conversation.last?.receipt?.total?.value == "BRL 25.00")
+    #expect(session.ledger.brlBalance.minorUnits == before - 2_500)
   }
 }
 

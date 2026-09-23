@@ -279,6 +279,7 @@ test("the person's own recurring spend is the app's record, never a task", () =>
   // The app holds the subscriptions; a search cannot know them.
   assert.equal(detectTaskKind("how much do I spend on subscriptions?"), null);
   assert.equal(detectTaskKind("what subscriptions can I cancel"), null);
+  assert.equal(detectTaskKind("I need to save money from my subs"), null);
   assert.equal(detectTaskKind("cancel Adobe please"), null);
   assert.equal(detectTaskKind("when does Netflix renew"), null);
   // But finding a cheaper alternative is research.

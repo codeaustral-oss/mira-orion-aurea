@@ -28,7 +28,7 @@ struct ReceiptLine: Sendable, Equatable, Hashable {
 /// The steps are the app's own simulated logistics — the same honesty rule as
 /// the ledger: in the demo they are as real as the figures, and each look moves
 /// the parcel one step rather than looping.
-struct PlacedOrder: Sendable, Equatable {
+struct PlacedOrder: Sendable, Equatable, Codable {
   var reference: String
   var item: String
   var merchant: String?
@@ -232,9 +232,8 @@ struct ReceiptSpec: Sendable, Equatable {
     let active = subscriptions.filter { !$0.cancelled }
     let nextFormatter = DateFormatter()
     nextFormatter.dateFormat = "d MMM"
-    var lines: [ReceiptLine] = active
+    let lines: [ReceiptLine] = active
       .sorted { $0.yearly.minorUnits > $1.yearly.minorUnits }
-      .prefix(6)
       .map { subscription in
         // A day number alone ("next 26") says nothing about which month. The
         // next charge is a date, computed from the app's own clock.
@@ -247,9 +246,6 @@ struct ReceiptSpec: Sendable, Equatable {
           label: subscription.name, value: "\(subscription.amount.display)\(next)",
           service: subscription.name)
       }
-    if active.count > lines.count {
-      lines.append(ReceiptLine(label: "…and \(active.count - lines.count) more", value: ""))
-    }
     return ReceiptSpec(
       kind: .savings,
       symbol: "arrow.triangle.2.circlepath",

@@ -86,7 +86,7 @@ export function looksLikeMoneyMovement(text) {
 
 /** The person's own recurring spend: the app holds that record, not a task. */
 export function looksLikeOwnRecurringSpend(text) {
-  return /\b(subscriptions?|recurring|unsubscribe|renews?|renewals?)\b/i.test(String(text || ""));
+  return /\b(subscriptions?|subs|recurring|unsubscribe|renews?|renewals?)\b/i.test(String(text || ""));
 }
 
 /** Cashback and offers: the terms are the issuer's data, quoted by the app. */
