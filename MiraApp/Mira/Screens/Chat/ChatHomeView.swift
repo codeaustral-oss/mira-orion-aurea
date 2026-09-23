@@ -392,7 +392,8 @@ struct ChatHomeView: View {
     guard contentHeight > viewport + 40 else { return }
     let target: AnyHashable
     let anchor: UnitPoint
-    if let last = session.conversation.last, last.receipt != nil {
+    if let last = session.conversation.last,
+      last.receipt != nil || last.action?.kind == .agentTask {
       target = last.id
       anchor = .top
     } else {
