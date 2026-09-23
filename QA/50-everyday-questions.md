@@ -86,3 +86,16 @@ Simulator checks covered the subscription receipt and its fixed actions, cancell
 48. What's my credit card utilization? — expected answer cue: `limit`
 49. What if my package is damaged? — expected answer cue: `damaged`
 50. What can you actually do? — expected answer cue: `simulated`
+
+## Agentic task routes checked separately
+
+The task service's 97 focused tests passed. They exercise these additional first requests and their follow-up state without depending on a live search result:
+
+- “Find me running shoes size 43 under 120 euros” → shopping task with product and budget.
+- “Flight to Lisbon under 500 euros” → travel task with a budget.
+- “Find me a flight to São Paulo” → asks for the missing departure and dates.
+- “Find me a restaurant in São Paulo for 4 on Friday at 8pm” → restaurant task.
+- “I need to buy lunch” → asks whether to deliver it or find a table.
+- “Watch the price of the Brooks Ghost 15 under 100 dollars every day” → standing price watch.
+- “Research the best espresso machines” → research task with a saved result artifact.
+- “Reserve a table for two in Lisbon” → restaurant task.
