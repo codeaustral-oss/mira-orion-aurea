@@ -33,25 +33,49 @@ struct ReceiptCardView: View {
   }
 
   /// One row of a list: its mark (a service tile or a symbol), the label, the value.
+  @ViewBuilder
   private func lineRow(_ line: ReceiptLine) -> some View {
-    HStack(alignment: .firstTextBaseline, spacing: Space.xs) {
-      if let service = line.service {
-        ServiceMark(name: service, size: 22)
-          .alignmentGuide(.firstTextBaseline) { $0[.bottom] - 4 }
-      } else if let icon = line.icon {
-        Image(systemName: Icons.symbol(for: icon))
-          .font(.system(size: 11, weight: .semibold))
-          .foregroundStyle(brand.textTertiary)
-          .frame(width: 18, alignment: .leading)
-          .alignmentGuide(.firstTextBaseline) { $0[.bottom] - 2 }
+    if line.value.count > 34 || line.label.count > 25 {
+      VStack(alignment: .leading, spacing: 4) {
+        HStack(spacing: Space.xs) {
+          if let service = line.service {
+            ServiceMark(name: service, size: 22)
+          } else if let icon = line.icon {
+            Image(systemName: Icons.symbol(for: icon))
+              .font(.system(size: 12, weight: .semibold))
+              .foregroundStyle(brand.textTertiary)
+          }
+          Text(line.label)
+            .font(MiraFont.label(13))
+            .foregroundStyle(brand.text)
+        }
+        Text(line.value)
+          .font(.system(size: 12.5, design: .monospaced))
+          .foregroundStyle(brand.textSecondary)
+          .fixedSize(horizontal: false, vertical: true)
       }
-      Text(line.label)
-        .font(.system(size: 12.5))
-        .foregroundStyle(brand.text)
-      Spacer(minLength: Space.xs)
-      Text(line.value)
-        .font(.system(size: 12.5, design: .monospaced))
-        .foregroundStyle(brand.textSecondary)
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .padding(.vertical, Space.xs)
+    } else {
+      HStack(alignment: .firstTextBaseline, spacing: Space.xs) {
+        if let service = line.service {
+          ServiceMark(name: service, size: 22)
+            .alignmentGuide(.firstTextBaseline) { $0[.bottom] - 4 }
+        } else if let icon = line.icon {
+          Image(systemName: Icons.symbol(for: icon))
+            .font(.system(size: 11, weight: .semibold))
+            .foregroundStyle(brand.textTertiary)
+            .frame(width: 18, alignment: .leading)
+            .alignmentGuide(.firstTextBaseline) { $0[.bottom] - 2 }
+        }
+        Text(line.label)
+          .font(.system(size: 12.5))
+          .foregroundStyle(brand.text)
+        Spacer(minLength: Space.xs)
+        Text(line.value)
+          .font(.system(size: 12.5, design: .monospaced))
+          .foregroundStyle(brand.textSecondary)
+      }
     }
   }
 

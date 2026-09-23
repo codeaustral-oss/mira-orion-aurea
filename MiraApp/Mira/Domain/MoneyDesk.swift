@@ -164,8 +164,9 @@ enum FeeRadar {
   /// The advice is stated in the window's units — a total and a count of
   /// occurrences — never a monthly average beside a per-occurrence figure.
   static func findings(_ events: [FeeEvent], fxFeeLabel: String? = nil) -> [Finding] {
-    let grouped = Dictionary(grouping: events, by: \.kind)
-    return grouped.compactMap { kind, entries -> Finding? in
+    let grouped = Dictionary(grouping: events) { "\($0.kind.rawValue):\($0.currencyCode)" }
+    return grouped.compactMap { _, entries -> Finding? in
+      guard let kind = entries.first?.kind else { return nil }
       guard let currency = entries.first?.currency else { return nil }
       let total = Money(minorUnits: entries.reduce(Int64(0)) { $0 + $1.amountMinor }, currency: currency)
       let remedy: String
@@ -186,7 +187,20 @@ enum FeeRadar {
         kind: kind, total: total, count: entries.count,
         advice: "\(charges) · \(total.display) — \(remedy).")
     }
-    .sorted { $0.total.minorUnits > $1.total.minorUnits }
+    .sorted {
+      if $0.total.currency == $1.total.currency {
+        return $0.total.minorUnits > $1.total.minorUnits
+      }
+      return $0.total.currency.code < $1.total.currency.code
+    }
+  }
+
+  static func totalsByCurrency(_ findings: [Finding]) -> [Money] {
+    let grouped = Dictionary(grouping: findings, by: { $0.total.currency })
+    return grouped.map { currency, rows in
+      Money(minorUnits: rows.reduce(0) { $0 + $1.total.minorUnits }, currency: currency)
+    }
+    .sorted { $0.currency.code < $1.currency.code }
   }
 
   /// The answer: the window's total, then the biggest line and what would avoid
@@ -195,6 +209,14 @@ enum FeeRadar {
     guard let first = findings.first else { return "\(total.display) in fees." }
     return "\(total.display) in fees over three months. The biggest line is "
       + "\(first.kind.label): \(first.advice)"
+  }
+
+  static func answer(findings: [Finding]) -> String {
+    let totals = totalsByCurrency(findings)
+    guard !totals.isEmpty else { return "No fees are on record." }
+    if totals.count == 1 { return answer(total: totals[0], findings: findings) }
+    return totals.map(\.display).joined(separator: " and ")
+      + " in fees over three months, shown separately by currency."
   }
 
   /// Chips that exist as app actions: the tier document names the FX mark-up,

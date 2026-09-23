@@ -28,11 +28,14 @@ struct StoredTurn: Codable, Identifiable, Sendable {
   var replySource: String?
   var isError: Bool
   var receipt: ReceiptSpec?
+  /// Optional so conversations saved before actions were persisted still open.
+  var chips: [String]?
+  var flow: String?
 
   init(
     id: UUID, role: String, at: Date, text: String, specialistId: String?,
     action: AgentAction?, replySource: String?, isError: Bool,
-    receipt: ReceiptSpec? = nil
+    receipt: ReceiptSpec? = nil, chips: [String]? = nil, flow: String? = nil
   ) {
     self.id = id
     self.role = role
@@ -43,6 +46,8 @@ struct StoredTurn: Codable, Identifiable, Sendable {
     self.replySource = replySource
     self.isError = isError
     self.receipt = receipt
+    self.chips = chips
+    self.flow = flow
   }
 }
 

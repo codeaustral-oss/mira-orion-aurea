@@ -34,6 +34,13 @@ struct ChatHomeView: View {
 
   private var hasConversation: Bool { !session.conversation.isEmpty }
 
+  private var subscriptionActions: [String] {
+    guard let last = session.conversation.last, last.role == .mira,
+      last.flow == "subscriptions"
+    else { return [] }
+    return Array(last.chips.prefix(3))
+  }
+
   var body: some View {
     ZStack {
       brand.canvas.ignoresSafeArea()
@@ -54,6 +61,10 @@ struct ChatHomeView: View {
           transcript
         } else {
           restingHome
+        }
+
+        if !subscriptionActions.isEmpty {
+          subscriptionActionDock
         }
 
         composer
@@ -368,7 +379,7 @@ struct ChatHomeView: View {
     guard contentHeight > viewport + 40 else { return }
     let target: AnyHashable
     let anchor: UnitPoint
-    if let last = session.conversation.last, last.receipt?.kind == .savings {
+    if let last = session.conversation.last, last.receipt != nil {
       target = last.id
       anchor = .top
     } else {
@@ -425,6 +436,36 @@ struct ChatHomeView: View {
   }
 
   // MARK: Composer
+
+  private var subscriptionActionDock: some View {
+    ScrollView(.horizontal, showsIndicators: false) {
+      HStack(spacing: Space.xs) {
+        ForEach(subscriptionActions, id: \.self) { action in
+          Button {
+            send(action)
+          } label: {
+            Text(action)
+              .font(MiraFont.label(13))
+              .foregroundStyle(brand.text)
+              .lineLimit(1)
+              .padding(.horizontal, Space.sm)
+              .frame(minHeight: 40)
+              .background(brand.surface, in: Capsule())
+              .overlay { Capsule().strokeBorder(brand.hairline, lineWidth: 1) }
+          }
+          .buttonStyle(.plain)
+          .disabled(session.isWorking)
+          .accessibilityLabel(action)
+        }
+      }
+      .padding(.horizontal, Space.gutter)
+    }
+    .padding(.vertical, Space.xs)
+    .background(brand.canvas)
+    .overlay(alignment: .top) {
+      Rectangle().fill(brand.hairline).frame(height: 1)
+    }
+  }
 
   private var composer: some View {
     VStack(spacing: 0) {

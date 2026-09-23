@@ -110,7 +110,7 @@ struct ChatTurnView: View {
         ReceiptCardView(receipt: receipt)
       }
 
-      if showsChips, !turn.chips.isEmpty {
+      if showsChips, !turn.chips.isEmpty, turn.flow != "subscriptions" {
         chipRow
       }
     }

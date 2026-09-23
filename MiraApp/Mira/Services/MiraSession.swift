@@ -597,6 +597,14 @@ final class MiraSession {
     lastAgentReply = nil
     lastAgentError = nil
     lastOrchestration = nil
+    // A new or restored chat cannot inherit an unfinished action from a
+    // different conversation. Those drafts are not part of StoredThread.
+    checkout = nil
+    pendingConversion = nil
+    pendingSwap = nil
+    pendingNegotiation = nil
+    pendingRule = nil
+    pendingRuleAction = nil
   }
 
   /// Snapshot the live transcript and its transfer context into the active
@@ -652,7 +660,9 @@ final class MiraSession {
       action: turn.action,
       replySource: turn.replySource,
       isError: turn.isError,
-      receipt: turn.receipt)
+      receipt: turn.receipt,
+      chips: turn.chips,
+      flow: turn.flow)
   }
 
   private func makeTurn(_ stored: StoredTurn) -> ConversationTurn {
@@ -667,6 +677,8 @@ final class MiraSession {
       action: stored.action,
       replySource: stored.replySource,
       isError: stored.isError,
+      chips: stored.chips ?? (stored.receipt?.kind == .savings ? subscriptionActionChips() : []),
+      flow: stored.flow ?? (stored.receipt?.kind == .savings ? "subscriptions" : nil),
       receipt: stored.receipt)
   }
 
@@ -3502,7 +3514,12 @@ final class MiraSession {
 
     // 4 · Bill negotiation at renewal.
     if has(["negotiate", "renewal", "contract", "they raised"]) {
-      guard let bill = localDirectory.negotiableBills.first else { return false }
+      guard let bill = localDirectory.negotiableBills.first else {
+        appendMira(
+          "I don't have a contract or renewal on record yet. Add the bill and its renewal date, and I can prepare an ask to compare.",
+          flow: "negotiation")
+        return true
+      }
       let ask = Negotiation.prepare(bill)
       pendingNegotiation = ask
       appendMira(
@@ -3534,15 +3551,16 @@ final class MiraSession {
       ).tier
       let findings = FeeRadar.findings(localDirectory.feeEvents, fxFeeLabel: tier.fxFeeLabel)
       guard !findings.isEmpty else { return false }
-      let currency = findings.first?.total.currency ?? .brl
-      let total = Money(minorUnits: findings.reduce(Int64(0)) { $0 + $1.total.minorUnits }, currency: currency)
+      let totals = FeeRadar.totalsByCurrency(findings)
       appendMira(
-        FeeRadar.answer(total: total, findings: findings),
+        FeeRadar.answer(findings: findings),
         chips: FeeRadar.chips,
         receipt: ReceiptSpec.brief(
-          badge: "FEES", symbol: "percent", title: total.display, subtitle: "Three months, grouped",
+          badge: "FEES", symbol: "percent",
+          title: totals.map(\.display).joined(separator: " · "),
+          subtitle: "Three months, grouped by currency",
           lines: findings.map { ReceiptLine(label: $0.kind.label, value: "\($0.total.display) · \($0.count)x") },
-          total: ReceiptLine(label: "Total", value: total.display),
+          total: totals.count == 1 ? totals.first.map { ReceiptLine(label: "Total", value: $0.display) } : nil,
           footnote: findings.map(\.advice).joined(separator: " ")),
         flow: "fees")
       return true
@@ -4288,8 +4306,19 @@ final class MiraSession {
   /// Subscriptions are the app's own record. The total, the best things to
   /// stop and the cancelling itself are arithmetic and one confirmation — no
   /// search, no model.
+  private func subscriptionActionChips() -> [String] {
+    let top = Subscriptions.savings(localDirectory.subscriptions)?.top(1).first
+    return (top.map { ["Cancel \($0.name)"] } ?? [])
+      + ["Find unused subscriptions", "What's charging this week?"]
+  }
+
   private func handleSubscriptionIntent(_ text: String) -> Bool {
     let lowered = text.lowercased()
+    // Finding unused services belongs to the usage audit, even when the
+    // question also says "subscriptions".
+    if lowered.contains("unused") || lowered.contains("not using") || lowered.contains("still paying") {
+      return false
+    }
     let mentionsSubscriptions =
       lowered.contains("subscription") || lowered.contains("subscri") || lowered.contains("recurring")
       || lowered.range(of: "\\bsubs\\b", options: .regularExpression) != nil
@@ -4384,7 +4413,6 @@ final class MiraSession {
       lowered.range(
         of: "\\bcharg(?:e|es|ing)\\b[^.!?\\n]{0,40}\\bweek\\b", options: .regularExpression) != nil
       || lowered.contains("upcoming charge") || lowered.contains("charges soon")
-      || lowered.contains("show all subscriptions")
     if asksAboutUpcomingCharges { return surfaceRenewalReminders() }
 
     // "keep it" / "turn reminders off" from the renewal answer. "Keep it"
@@ -4417,7 +4445,7 @@ final class MiraSession {
         minorUnits: top.reduce(Int64(0)) { $0 + $1.yearly.minorUnits }, currency: savings.monthly.currency)
       appendMira(
         "\(savings.count) subscriptions, \(savings.monthly.display) a month — \(savings.yearly.display) a year. The dearest are \(topLine); stopping those three alone saves \(saveLine.display) a year.",
-        chips: top.first.map { ["Cancel \($0.name)", "Show all subscriptions"] } ?? ["Show all subscriptions"],
+        chips: subscriptionActionChips(),
         receipt: ReceiptSpec.savings(localDirectory.subscriptions),
         flow: "subscriptions")
       return true

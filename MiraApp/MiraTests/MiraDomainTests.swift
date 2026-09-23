@@ -864,6 +864,8 @@ struct ChatThreadTests {
       date: Date(timeIntervalSince1970: 1_700_000_000))
     var answer = turn("mira", "11 subscriptions")
     answer.receipt = receipt
+    answer.chips = ["Cancel Adobe Creative Cloud", "Find unused subscriptions"]
+    answer.flow = "subscriptions"
     let thread = StoredThread(
       id: UUID(), title: "Subscriptions", createdAt: answer.at, updatedAt: answer.at,
       activeAgentId: nil, turns: [answer], proposalStates: [:], pendingTo: nil,
@@ -872,6 +874,8 @@ struct ChatThreadTests {
 
     let restored = store.load().threads.first?.turns.first?.receipt
     #expect(restored == receipt)
+    #expect(store.load().threads.first?.turns.first?.chips == answer.chips)
+    #expect(store.load().threads.first?.turns.first?.flow == "subscriptions")
   }
 
   @Test("a missing file reads as an empty, usable payload")
@@ -2093,6 +2097,19 @@ struct MoneyDeskTests {
     #expect(findings.contains { $0.kind == .weekend })
     // The transfer remedy is a rail this build actually offers.
     #expect(findings.first { $0.kind == .transfer }?.advice.contains("Pix") == true)
+  }
+
+  @Test("fee totals keep currencies separate")
+  func feesByCurrency() {
+    let events = [
+      FeeEvent(kind: .atm, amountMinor: 3_290, currencyCode: "BRL", at: Date(), note: "ATM"),
+      FeeEvent(kind: .fx, amountMinor: 240, currencyCode: "USD", at: Date(), note: "FX"),
+    ]
+    let findings = FeeRadar.findings(events)
+    #expect(FeeRadar.totalsByCurrency(findings).map(\.display) == ["BRL 32.90", "USD 2.40"])
+    let answer = FeeRadar.answer(findings: findings)
+    #expect(answer.contains("BRL 32.90 and USD 2.40"))
+    #expect(!answer.contains("BRL 35.30"))
   }
 
   @Test("idle cash is what is left after everything already promised")
@@ -4597,6 +4614,117 @@ struct CapabilityDocumentTests {
 }
 
 // MARK: - The five questions a prior adversarial test exposed
+
+// Fifty everyday first turns. Every prompt gets a fresh profile session, so a
+// previous draft, cancellation, or answer cannot make a later case pass.
+@MainActor
+@Suite("Fifty everyday new-chat questions", .serialized)
+struct EverydayQuestionTests {
+  private struct NoRoute: MiraRouteProviding {
+    func route(_ message: String, baseURL: URL) async -> RoutedIntent? { nil }
+  }
+
+  @Test("new chat does not inherit an unfinished purchase")
+  func freshChatDropsDraft() async {
+    let directory = FileManager.default.temporaryDirectory
+      .appendingPathComponent("mira-fresh-\(UUID().uuidString)", isDirectory: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let session = MiraSession(
+      sessionId: "fresh-draft",
+      chatStore: ChatThreadStore(path: directory.appendingPathComponent("chats.json")),
+      taskStore: AgentTaskStore(path: directory.appendingPathComponent("tasks.json")),
+      directory: LocalDirectoryStore(path: directory.appendingPathComponent("directory.json")),
+      routeClient: NoRoute())
+    session.startCheckout(item: "Cat food")
+    #expect(session.checkout != nil)
+    session.newConversation()
+    #expect(session.checkout == nil)
+    await session.sendChat("Show all subscriptions")
+    #expect(session.conversation.last?.receipt?.kind == .savings)
+  }
+
+  @Test("every question produces the relevant on-device answer or next action")
+  func firstTurns() async {
+    let cases: [(String, String)] = [
+      ("Where is my money right now?", "available"),
+      ("How much do I have?", "available"),
+      ("Show my balances", "available"),
+      ("Show my holdings", "available"),
+      ("How much is left in this week's budget?", "left this week"),
+      ("What's my weekly budget?", "left this week"),
+      ("Can I spend this week?", "how much"),
+      ("How much is my reserve?", "reserve"),
+      ("Freeze my card", "frozen"),
+      ("Is my card active?", "card"),
+      ("Open card controls", "card"),
+      ("How do I receive money?", "receiving details"),
+      ("Show my account details", "receiving details"),
+      ("Show all subscriptions", "subscriptions"),
+      ("How many subscriptions do I have?", "subscriptions"),
+      ("How much do my subscriptions cost each month?", "subscriptions"),
+      ("I need to save money from my subs", "subscriptions"),
+      ("Show my recurring charges", "subscriptions"),
+      ("When does Netflix renew?", "netflix"),
+      ("When does Spotify renew?", "spotify"),
+      ("What upcoming charges do I have?", "charges"),
+      ("What fees have I paid?", "fee"),
+      ("Where are my fees?", "fee"),
+      ("Find unused subscriptions", "look at"),
+      ("What am I still paying for that I don't use?", "stopping"),
+      ("Show cashback", "cashback"),
+      ("What offers can I use?", "offers"),
+      ("What rewards do I have?", "offers"),
+      ("What tier am I on?", "tier"),
+      ("How do I upgrade my account?", "tier"),
+      ("Show my piggy banks", "piggy"),
+      ("How are my savings goals?", "piggy banks"),
+      ("How much is in my goal?", "macbook pro"),
+      ("How much is safe to put away?", "safe"),
+      ("Is there idle cash I could save?", "safe"),
+      ("Buy cat food", "price"),
+      ("Purchase headphones", "price"),
+      ("Buy a book", "price"),
+      ("Buy running shoes", "price"),
+      ("Send money", "who"),
+      ("Transfer money to a friend", "who"),
+      ("Send USD 25 to a contact", "who"),
+      ("Show my splits", "splits"),
+      ("Split USD 120 with Ana and Rui", "split"),
+      ("Can I afford USD 80?", "plan"),
+      ("Is there an unknown charge?", "charge"),
+      ("Can you negotiate my contract?", "renewal"),
+      ("What's my credit card utilization?", "limit"),
+      ("What if my package is damaged?", "damaged"),
+      ("What can you actually do?", "simulated"),
+    ]
+    #expect(cases.count == 50)
+
+    for (index, item) in cases.enumerated() {
+      let directory = FileManager.default.temporaryDirectory
+        .appendingPathComponent("mira-50-\(UUID().uuidString)", isDirectory: true)
+      let session = MiraSession(
+        sessionId: "everyday-\(index)",
+        orchestrator: MiraOrchestratorClient(baseURL: URL(string: "http://127.0.0.1:1")!),
+        chatStore: ChatThreadStore(path: directory.appendingPathComponent("chats.json")),
+        taskStore: AgentTaskStore(path: directory.appendingPathComponent("tasks.json")),
+        directory: LocalDirectoryStore(path: directory.appendingPathComponent("directory.json")),
+        routeClient: NoRoute(),
+        defaults: UserDefaults(suiteName: "mira-50-\(UUID().uuidString)")!)
+      await session.sendChat(item.0)
+      let answer = session.conversation.last
+      #expect(answer?.role == .mira, "Case \(index + 1): \(item.0)")
+      #expect(answer?.isError == false, "Case \(index + 1): \(item.0) → \(answer?.text ?? "no reply")")
+      #expect(answer?.text.lowercased().contains(item.1) == true,
+        "Case \(index + 1): \(item.0) → \(answer?.text ?? "no reply")")
+      if item.0 == "Show all subscriptions" {
+        #expect(answer?.receipt?.kind == .savings)
+        #expect(answer?.chips.contains("Cancel Adobe Creative Cloud") == true)
+      }
+      try? FileManager.default.removeItem(at: directory)
+    }
+  }
+}
+
 //
 // The real path: the app's own desk first, the proxy only if the desk has
 // nothing. These tests drive `sendChat` against an unreachable orchestrator and
