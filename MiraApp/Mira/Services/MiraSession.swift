@@ -259,6 +259,10 @@ struct ActivityItem: Identifiable, Sendable {
 
 // MARK: - Session
 
+private struct EverydayChatNoRoute: MiraRouteProviding {
+  func route(_ message: String, baseURL: URL) async -> RoutedIntent? { nil }
+}
+
 /// The single source of truth for the running app.
 ///
 /// Everything monetary is derived from `ledger`. The plan, the payments and the
@@ -482,6 +486,46 @@ final class MiraSession {
 
   var isShowingExampleConversation: Bool {
     threads.first { $0.id == activeThreadId }?.turns.contains { $0.replySource == "example" } == true
+  }
+
+  var hasEverydayChats: Bool {
+    threads.contains { $0.collectionId == "everyday-50-v1" }
+  }
+
+  /// Build each saved chat through the same answer path as a fresh user turn.
+  /// Isolated storage keeps a demonstration from freezing a card, creating a
+  /// split, or changing any other state in the person's active profile.
+  @discardableResult
+  func loadEverydayChats() async -> Int {
+    guard !hasEverydayChats else { return 0 }
+    persistCurrentThread()
+    var added = 0
+    let baseDate = Date().addingTimeInterval(-Double(EverydayChatPrompts.all.count))
+    for (index, prompt) in EverydayChatPrompts.all.enumerated() {
+      let directory = FileManager.default.temporaryDirectory
+        .appendingPathComponent("mira-chat-library-\(UUID().uuidString)", isDirectory: true)
+      let isolated = MiraSession(
+        sessionId: "chat-library-\(index)", brand: persona.brand, persona: persona,
+        orchestrator: MiraOrchestratorClient(baseURL: URL(string: "http://127.0.0.1:1")!),
+        chatStore: ChatThreadStore(path: directory.appendingPathComponent("chats.json")),
+        taskStore: AgentTaskStore(path: directory.appendingPathComponent("tasks.json")),
+        directory: LocalDirectoryStore(path: directory.appendingPathComponent("directory.json")),
+        routeClient: EverydayChatNoRoute(),
+        defaults: UserDefaults(suiteName: "mira-chat-library-\(UUID().uuidString)")!)
+      await isolated.sendChat(prompt)
+      if let answer = isolated.conversation.last, answer.role == .mira, !answer.isError {
+        let date = baseDate.addingTimeInterval(Double(index))
+        threads.append(StoredThread(
+          id: UUID(), title: "\(index + 1). \(prompt)", createdAt: date, updatedAt: date,
+          activeAgentId: nil, turns: isolated.conversation.map(Self.storeTurn),
+          proposalStates: [:], pendingTo: nil, pendingAsset: nil, pendingAmountMinor: nil,
+          collectionId: "everyday-50-v1"))
+        added += 1
+      }
+      try? FileManager.default.removeItem(at: directory)
+    }
+    saveThreads()
+    return added
   }
 
   func openProfileStory() {

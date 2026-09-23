@@ -2,6 +2,8 @@
 
 Each question is tested as the first turn of a fresh Mira Orion session. The automated suite checks that Mira answers from its own records or opens a concrete next step, without an error. Subscription listing also checks the receipt and cancellation action.
 
+In the simulator, open the chat's **•••** menu and choose **Add 50 chats**. Mira generates and saves these as separate conversations under **Conversations**. Opening the menu again offers **Open 50 chats** without duplicating them. Generating the collection uses isolated profile storage so actions in those chats do not change the active profile while the collection is built.
+
 Simulator checks covered the subscription receipt and its fixed actions, cancellation and undo, the mixed-currency fee document, and the long affordability scenarios. These shared layouts cover the dense document forms; the automated suite checks all fifty first-turn reactions.
 
 ## Balances

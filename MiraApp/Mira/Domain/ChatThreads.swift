@@ -1,5 +1,61 @@
 import Foundation
 
+/// Questions that can be added to History as individual, working chats.
+enum EverydayChatPrompts {
+  static let all = [
+    "Where is my money right now?",
+    "How much do I have?",
+    "Show my balances",
+    "Show my holdings",
+    "How much is left in this week's budget?",
+    "What's my weekly budget?",
+    "Can I spend this week?",
+    "How much is my reserve?",
+    "Freeze my card",
+    "Is my card active?",
+    "Open card controls",
+    "How do I receive money?",
+    "Show my account details",
+    "Show all subscriptions",
+    "How many subscriptions do I have?",
+    "How much do my subscriptions cost each month?",
+    "I need to save money from my subs",
+    "Show my recurring charges",
+    "When does Netflix renew?",
+    "When does Spotify renew?",
+    "What upcoming charges do I have?",
+    "What fees have I paid?",
+    "Where are my fees?",
+    "Find unused subscriptions",
+    "What am I still paying for that I don't use?",
+    "Show cashback",
+    "What offers can I use?",
+    "What rewards do I have?",
+    "What tier am I on?",
+    "How do I upgrade my account?",
+    "Show my piggy banks",
+    "How are my savings goals?",
+    "How much is in my goal?",
+    "How much is safe to put away?",
+    "Is there idle cash I could save?",
+    "Buy cat food",
+    "Purchase headphones",
+    "Buy a book",
+    "Buy running shoes",
+    "Send money",
+    "Transfer money to a friend",
+    "Send USD 25 to a contact",
+    "Show my splits",
+    "Split USD 120 with Ana and Rui",
+    "Can I afford USD 80?",
+    "Is there an unknown charge?",
+    "Can you negotiate my contract?",
+    "What's my credit card utilization?",
+    "What if my package is damaged?",
+    "What can you actually do?",
+  ]
+}
+
 // MARK: - Persisted conversations
 //
 // The first version of the chat home kept its transcript in memory for the life
@@ -65,6 +121,8 @@ struct StoredThread: Codable, Identifiable, Sendable {
   var pendingTo: String?
   var pendingAsset: String?
   var pendingAmountMinor: Int64?
+  /// Identifies a loaded collection without changing the chat's visible turns.
+  var collectionId: String? = nil
 
   var isEmpty: Bool { turns.isEmpty }
 

@@ -183,6 +183,15 @@ struct ChatHomeView: View {
           Label("Conversations", systemImage: "clock.arrow.circlepath")
         }
         Button {
+          Task {
+            await session.loadEverydayChats()
+            route = .threads
+          }
+        } label: {
+          Label(session.hasEverydayChats ? "Open 50 chats" : "Add 50 chats",
+            systemImage: "square.stack.3d.up")
+        }
+        Button {
           session.newConversation()
           draft = ""
         } label: {
@@ -201,7 +210,7 @@ struct ChatHomeView: View {
           .background(brand.surface, in: Circle())
           .overlay { Circle().strokeBorder(brand.hairline, lineWidth: 1) }
       }
-      .accessibilityLabel("Conversation options: conversations, new chat, specialists")
+      .accessibilityLabel("Conversation options: conversations, 50 chats, new chat, specialists")
     } else {
       RoundIconButton(glyph: "person.2", label: "Specialists") {
         showRoster = true

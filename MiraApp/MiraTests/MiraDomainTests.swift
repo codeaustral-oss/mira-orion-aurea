@@ -4624,6 +4624,33 @@ struct EverydayQuestionTests {
     func route(_ message: String, baseURL: URL) async -> RoutedIntent? { nil }
   }
 
+  @Test("the fifty chats are saved, reopen with actions, and load only once")
+  func savedChats() async {
+    let directory = FileManager.default.temporaryDirectory
+      .appendingPathComponent("mira-saved-50-\(UUID().uuidString)", isDirectory: true)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let store = ChatThreadStore(path: directory.appendingPathComponent("chats.json"))
+    let session = MiraSession(
+      sessionId: "saved-50", chatStore: store,
+      taskStore: AgentTaskStore(path: directory.appendingPathComponent("tasks.json")),
+      directory: LocalDirectoryStore(path: directory.appendingPathComponent("directory.json")),
+      routeClient: NoRoute(),
+      defaults: UserDefaults(suiteName: "mira-saved-50-\(UUID().uuidString)")!)
+    let original = session.activeThreadId
+    #expect(await session.loadEverydayChats() == 50)
+    #expect(session.activeThreadId == original)
+    #expect(session.threads.filter { $0.collectionId == "everyday-50-v1" }.count == 50)
+    #expect(await session.loadEverydayChats() == 0)
+    guard let subscriptions = session.threads.first(where: { $0.title.contains("Show all subscriptions") }) else {
+      Issue.record("Subscriptions chat missing")
+      return
+    }
+    session.selectThread(subscriptions.id)
+    #expect(session.conversation.last?.receipt?.kind == .savings)
+    #expect(session.conversation.last?.chips.contains("Cancel Adobe Creative Cloud") == true)
+    #expect(store.load().threads.count == 51)
+  }
+
   @Test("new chat does not inherit an unfinished purchase")
   func freshChatDropsDraft() async {
     let directory = FileManager.default.temporaryDirectory

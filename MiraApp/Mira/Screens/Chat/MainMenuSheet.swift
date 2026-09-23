@@ -367,6 +367,13 @@ struct ThreadsHistoryView: View {
             }
             .buttonStyle(BrandButtonStyle(kind: .primary, fullWidth: false))
 
+            if !session.hasEverydayChats {
+              Button("Add 50 chats") {
+                Task { await session.loadEverydayChats() }
+              }
+              .buttonStyle(BrandButtonStyle(kind: .secondary, fullWidth: false))
+            }
+
             if session.threadsNewestFirst.isEmpty {
               Text("No saved chats yet. Ask Mira something and the conversation will appear here.")
                 .font(MiraFont.body(15))
